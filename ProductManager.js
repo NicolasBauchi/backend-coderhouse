@@ -3,7 +3,7 @@ class ProductManager {
     constructor(products) {
         this.products = products;
         this.id_prod = 0;
-        this.path = "./path";
+        this.path = "./path/actividad.txt";
     }
 
     addProduct(prod) {
@@ -119,16 +119,14 @@ class ProductManager {
     }
 
     getProducts() {
-        let productos_list = fs.readFileSync("./path/actividad.txt", "utf-8");
+        let productos_list = fs.readFileSync(this.path, "utf-8");
         let listado = JSON.parse(productos_list);
-        return console.log(listado);;
-
-        //return console.log(this.products);
+        return console.log(listado);
     }
 
     getProductById(id) {
 
-        let productos_list = fs.readFileSync("./path/actividad.txt", "utf-8");
+        let productos_list = fs.readFileSync(this.path, "utf-8");
         let listado = JSON.parse(productos_list);
 
         let encontrado = 0;
@@ -158,7 +156,7 @@ class ProductManager {
 
     updateProduct(u_producto) {
 
-        let productos_list = fs.readFileSync("./path/actividad.txt", "utf-8");
+        let productos_list = fs.readFileSync(this.path, "utf-8");
         let listado = JSON.parse(productos_list);
 
         let encontrado = 0;
@@ -184,7 +182,7 @@ class ProductManager {
 
             let update = JSON.stringify(listado);
 
-            fs.writeFileSync("./path/actividad.txt", update);
+            fs.writeFileSync(this.path, update);
 
             console.log(" El producto se actualizó.\n");
 
@@ -197,14 +195,14 @@ class ProductManager {
 
     deleteProduct(id) {
 
-        let productos_list = fs.readFileSync("./path/actividad.txt", "utf-8");
+        let productos_list = fs.readFileSync(this.path, "utf-8");
         let listado = JSON.parse(productos_list);
 
         listado = listado.filter((item) => item.id != id);
 
         let update = JSON.stringify(listado);
 
-        fs.writeFileSync("./path/actividad.txt", update);
+        fs.writeFileSync(this.path, update);
 
     }
 }
