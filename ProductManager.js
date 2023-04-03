@@ -1,9 +1,10 @@
-const fs = require("fs");
-class ProductManager {
+
+import * as fs from "fs";
+export default class ProductManager {
     constructor(products) {
         this.products = products;
         this.id_prod = 0;
-        this.path = "./path/actividad.txt";
+        this.path = "../path/actividad.json";
     }
 
     addProduct(prod) {
@@ -12,11 +13,11 @@ class ProductManager {
 
 
 
-        if (fs.existsSync("./path/actividad.txt")) {
+        if (fs.existsSync(this.path)) {
             //si exsite entonces levanto info, proceso y escribo.
 
 
-            let contenido = fs.readFileSync("./path/actividad.txt", "utf-8");
+            let contenido = fs.readFileSync(this.path, "utf-8");
             const prod_bd = JSON.parse(contenido);
 
             prod_bd.forEach(el => {
@@ -59,7 +60,7 @@ class ProductManager {
 
                 const info = JSON.stringify(prod_bd);
 
-                fs.writeFileSync("./path/actividad.txt", info);
+                fs.writeFileSync(this.path, info);
 
             } else {
                 console.log("No se agregó el producto.");
@@ -100,7 +101,7 @@ class ProductManager {
                 prod.id = this.id_prod;
                 const info = JSON.stringify([prod]);
 
-                fs.writeFileSync("./path/actividad.txt", info);
+                fs.writeFileSync(this.path, info);
 
             } else {
                 console.log("No se agregó el producto.");
@@ -121,7 +122,7 @@ class ProductManager {
     getProducts() {
         let productos_list = fs.readFileSync(this.path, "utf-8");
         let listado = JSON.parse(productos_list);
-        return console.log(listado);
+        return listado;
     }
 
     getProductById(id) {
@@ -144,10 +145,10 @@ class ProductManager {
 
         if (encontrado > 0) {
             console.log(" El producto se encontró, es: \n");
-            console.log(listado[posicion]);
+            return listado[posicion];
 
         } else {
-            console.log("Not found.");
+            return "Not found.";
 
         }
 
@@ -174,20 +175,16 @@ class ProductManager {
 
         if (encontrado > 0) {
 
-            //let id_original = listado[posicion].id;
-
             listado[posicion] = u_producto;
-
-            //listado[posicion].id = id_original;
 
             let update = JSON.stringify(listado);
 
             fs.writeFileSync(this.path, update);
 
-            console.log(" El producto se actualizó.\n");
+            return ` El producto ${listado[posicion].title} se actualizó.\n`;
 
         } else {
-            console.log("Not found.");
+            return "Not found.";
         }
 
     }
@@ -206,8 +203,6 @@ class ProductManager {
 
     }
 }
-
-
 
 
 
@@ -250,8 +245,80 @@ const prod3 = {
     code: "9998tv",
     stock: 114,
 }
+const prod4 = {
+    id: 0,
+    title: "Zapatillas",
+    description: "las mejores del mercado",
+    price: 21000,
+    thumbnail: "/zapatillas",
+    code: "46587zapa",
+    stock: 875,
+}
+const prod5 = {
+    id: 0,
+    title: "Parlante",
+    description: "potencia 567 watts",
+    price: 68955,
+    thumbnail: "/parlante",
+    code: "111parlante",
+    stock: 63,
+}
+const prod6 = {
+    id: 0,
+    title: "libro",
+    description: "harry potter",
+    price: 4896,
+    thumbnail: "/libroHarry",
+    code: "3589l",
+    stock: 12,
+}
+const prod7 = {
+    id: 0,
+    title: "Vaso",
+    description: "vidrio templado",
+    price: 379,
+    thumbnail: "/vaso",
+    code: "98699vaso",
+    stock: 866,
+}
+const prod8 = {
+    id: 0,
+    title: "Teclado",
+    description: "Gamer con luz",
+    price: 7800,
+    thumbnail: "/teclado",
+    code: "11231teclado",
+    stock: 49,
+}
+const prod9 = {
+    id: 0,
+    title: "Cartuchera",
+    description: "lleno de todos los colores",
+    price: 3881,
+    thumbnail: "/cartuchera",
+    code: "cartu999",
+    stock: 17,
+}
+const prod10 = {
+    id: 0,
+    title: "Cuaderno",
+    description: "rayado 300 paginas",
+    price: 280,
+    thumbnail: "/cuaderno",
+    code: "cuaderno6598327",
+    stock: 1140,
+}
+const prod11 = {
+    id: 0,
+    title: "Tacho",
+    description: "Tacho de basura 7 litros",
+    price: 15000,
+    thumbnail: "/tacho",
+    code: "tacho98580",
+    stock: 8,
+}
 
-let arrayProd = [prod1];
+/* let arrayProd = [prod1];
 
 const productos_1 = new ProductManager(arrayProd);
 
@@ -279,15 +346,25 @@ productos_1.updateProduct(prod_copy);
 console.log("Luego del update muestro nuevamente los productos:");
 productos_1.getProducts();
 
-console.log("------------------------");
+console.log("------------------------"); */
 
 
-console.log("DELETE un producto");
+/* console.log("DELETE un producto");
 productos_1.deleteProduct(1);
 console.log("Luego del DELETE muestro nuevamente los productos:");
-productos_1.getProducts();
-
-console.log("------------------------");
-
-
+productos_1.getProducts(); */
+/* 
+console.log("------------------------"); */
+/* const productos_1 = new ProductManager(arrayProd);
+productos_1.addProduct(prod1);
+productos_1.addProduct(prod2);
+productos_1.addProduct(prod3);
+productos_1.addProduct(prod4);
+productos_1.addProduct(prod5);
+productos_1.addProduct(prod6);
+productos_1.addProduct(prod7);
+productos_1.addProduct(prod8);
+productos_1.addProduct(prod9);
+productos_1.addProduct(prod10);
+productos_1.addProduct(prod11); */
 
