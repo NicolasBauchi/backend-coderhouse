@@ -1,15 +1,5 @@
 import * as fs from "fs";
 export default class CartManager {
-    /* Cart trae:
-    id,
-    products = [
-        {
-            product: "id",
-            quantity: "valor int ",
-        }
-    ],
-
-    */
 
     constructor(products) {
         this.idCart = 0;
