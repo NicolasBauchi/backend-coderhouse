@@ -1,22 +1,28 @@
 
 import * as fs from "fs";
 export default class ProductManager {
-    constructor(products) {
-        this.products = products;
+    constructor(product) {
+        this.product = product;
         this.id_prod = 0;
-        this.path = "../path/actividad.json";
+        this.path = "../path/productos.json";
     }
 
     addProduct(prod) {
-        let camposObligatorios = 0;
+        let termino = "Se agregó producto.";
         let repiteCode = 0;
+
+        let campo_title = 0;
+        let campo_description = 0;
+        let campo_price = 0;
+        let campo_code = 0;
+        let campo_stock = 0;
+        let campo_category = 0;
+
 
 
 
         if (fs.existsSync(this.path)) {
-            //si exsite entonces levanto info, proceso y escribo.
-
-
+            //si existe entonces levanto info, proceso y escribo.
             let contenido = fs.readFileSync(this.path, "utf-8");
             const prod_bd = JSON.parse(contenido);
 
@@ -28,47 +34,92 @@ export default class ProductManager {
             });
 
             if (prod.title === "") {
-                camposObligatorios++;
+                campo_title++;
                 console.log("Completar title");
             }
             if (prod.description === "") {
-                camposObligatorios++;
+                campo_description++;
                 console.log("Completar description");
             }
             if (prod.price === "") {
-                camposObligatorios++;
+                campo_price++;
                 console.log("Completar price");
             }
-            if (prod.thumbnail === "") {
+            /* if (prod.thumbnail === "") {
                 camposObligatorios++;
                 console.log("Completar thumbnail");
-            }
+            } */
             if (prod.code === "") {
-                camposObligatorios++;
+                campo_code++;
                 console.log("Completar code");
             }
             if (prod.stock === "") {
-                camposObligatorios++;
+                campo_stock++;
                 console.log("Completar stock");
             }
+            /* if (prod.status === "") {
+                camposObligatorios++;
+                console.log("Completar status");
+            } */
+            if (prod.category === "") {
+                campo_category++;
+                console.log("Completar category");
+            }
 
-            if (camposObligatorios == 0 && repiteCode == 0) {
-                this.id_prod++;
-                prod.id = this.id_prod;
+            if (campo_title == 0 && campo_description == 0
+                && campo_price == 0 && campo_code == 0
+                && campo_stock == 0 && campo_category == 0
+                && repiteCode == 0) {
+                let ultimoProd = prod_bd.length - 1;
+                let ultimoId = parseInt(prod_bd[ultimoProd].id);
+                let auxID = (ultimoId + 1);
+                prod.id = auxID;
+                prod.status = true;
 
                 prod_bd.push(prod);
-
                 const info = JSON.stringify(prod_bd);
 
                 fs.writeFileSync(this.path, info);
-
+                return termino;
             } else {
-                console.log("No se agregó el producto.");
+                let mensaje = "Line: 85 - No se agregó el producto. Revisar: \n";
+
+                if (campo_title > 0) {
+                    console.log("Title");
+                    mensaje += "Title \n";
+                }
+                if (campo_description > 0) {
+                    console.log("Description");
+                    mensaje += "Description \n";
+                }
+                if (campo_price > 0) {
+                    console.log("Price");
+                    mensaje += "Price \n";
+                }
+                if (campo_code > 0) {
+                    console.log("Code");
+                    mensaje += "Code \n";
+                }
+                if (campo_stock > 0) {
+                    console.log("Stock");
+                    mensaje += "Stock \n";
+                }
+                if (campo_category > 0) {
+                    console.log("Category");
+                    mensaje += "Category \n";
+                }
+                if (repiteCode > 0) {
+                    console.log("Repite CODE");
+                    mensaje += "Repite CODE \n";
+                }
+
+                console.log(mensaje);
+                return mensaje;
             }
 
 
         } else {
-            //si no existe info la creo.
+            //si no existe el archivo lo creo.
 
             if (prod.title === "") {
                 camposObligatorios++;
@@ -82,10 +133,10 @@ export default class ProductManager {
                 camposObligatorios++;
                 console.log("Completar price");
             }
-            if (prod.thumbnail === "") {
+            /* if (prod.thumbnail === "") {
                 camposObligatorios++;
                 console.log("Completar thumbnail");
-            }
+            } */
             if (prod.code === "") {
                 camposObligatorios++;
                 console.log("Completar code");
@@ -94,29 +145,61 @@ export default class ProductManager {
                 camposObligatorios++;
                 console.log("Completar stock");
             }
+            /* if (prod.status === "") {
+                camposObligatorios++;
+                console.log("Completar status");
+            } */
+            if (prod.category === "") {
+                camposObligatorios++;
+                console.log("Completar category");
+            }
 
 
-            if (camposObligatorios == 0) {
-                this.id_prod++;
-                prod.id = this.id_prod;
+            if (campo_title == 0 && campo_description == 0
+                && campo_price == 0 && campo_code == 0
+                && campo_stock == 0 && campo_category == 0) {
+
+                prod.id = 1;
+
+                prod.status = true;
+
                 const info = JSON.stringify([prod]);
-
                 fs.writeFileSync(this.path, info);
-
+                return termino;
             } else {
-                console.log("No se agregó el producto.");
+                let mensaje = "Line: 173 - No se agregó el producto. Revisar: \n";
+
+                if (campo_title > 0) {
+                    console.log("Title");
+                    mensaje += "Title \n";
+                }
+                if (campo_description > 0) {
+                    console.log("Description");
+                    mensaje += "Description \n";
+                }
+                if (campo_price > 0) {
+                    console.log("Price");
+                    mensaje += "Price \n";
+                }
+                if (campo_code > 0) {
+                    console.log("Code");
+                    mensaje += "Code \n";
+                }
+                if (campo_stock > 0) {
+                    console.log("Stock");
+                    mensaje += "Stock \n";
+                }
+                if (campo_category > 0) {
+                    console.log("Category");
+                    mensaje += "Category \n";
+                }
+                console.log(mensaje);
+                return mensaje;
             }
 
 
 
         }
-
-
-
-
-
-
-
     }
 
     getProducts() {
@@ -184,7 +267,7 @@ export default class ProductManager {
             return ` El producto ${listado[posicion].title} se actualizó.\n`;
 
         } else {
-            return "Not found.";
+            return "Line: 270 - Not found.";
         }
 
     }
@@ -200,171 +283,6 @@ export default class ProductManager {
         let update = JSON.stringify(listado);
 
         fs.writeFileSync(this.path, update);
-
+        return "Line: 286 - Se eliminó."
     }
 }
-
-
-
-//id,title,description,price,thumbnail,code,stock
-const prod1 = {
-    id: 0,
-    title: "gaseosa",
-    description: "marca coca cola",
-    price: 50,
-    thumbnail: "/cocacola",
-    code: "123coca",
-    stock: 500,
-}
-
-const prod2 = {
-    id: 0,
-    title: "smartphone",
-    description: "telefono inteligente sin marca",
-    price: 35780,
-    thumbnail: "/smartphone",
-    code: "456celu",
-    stock: 128,
-}
-const prod_copy = {
-    id: 1,
-    title: "banana",
-    description: "bananas frescas",
-    price: 220,
-    thumbnail: "/bananas",
-    code: "54698platano",
-    stock: 18963,
-}
-
-const prod3 = {
-    id: 0,
-    title: "televisor smart",
-    description: "televisor inteligente sin marca",
-    price: 115236,
-    thumbnail: "/televisor",
-    code: "9998tv",
-    stock: 114,
-}
-const prod4 = {
-    id: 0,
-    title: "Zapatillas",
-    description: "las mejores del mercado",
-    price: 21000,
-    thumbnail: "/zapatillas",
-    code: "46587zapa",
-    stock: 875,
-}
-const prod5 = {
-    id: 0,
-    title: "Parlante",
-    description: "potencia 567 watts",
-    price: 68955,
-    thumbnail: "/parlante",
-    code: "111parlante",
-    stock: 63,
-}
-const prod6 = {
-    id: 0,
-    title: "libro",
-    description: "harry potter",
-    price: 4896,
-    thumbnail: "/libroHarry",
-    code: "3589l",
-    stock: 12,
-}
-const prod7 = {
-    id: 0,
-    title: "Vaso",
-    description: "vidrio templado",
-    price: 379,
-    thumbnail: "/vaso",
-    code: "98699vaso",
-    stock: 866,
-}
-const prod8 = {
-    id: 0,
-    title: "Teclado",
-    description: "Gamer con luz",
-    price: 7800,
-    thumbnail: "/teclado",
-    code: "11231teclado",
-    stock: 49,
-}
-const prod9 = {
-    id: 0,
-    title: "Cartuchera",
-    description: "lleno de todos los colores",
-    price: 3881,
-    thumbnail: "/cartuchera",
-    code: "cartu999",
-    stock: 17,
-}
-const prod10 = {
-    id: 0,
-    title: "Cuaderno",
-    description: "rayado 300 paginas",
-    price: 280,
-    thumbnail: "/cuaderno",
-    code: "cuaderno6598327",
-    stock: 1140,
-}
-const prod11 = {
-    id: 0,
-    title: "Tacho",
-    description: "Tacho de basura 7 litros",
-    price: 15000,
-    thumbnail: "/tacho",
-    code: "tacho98580",
-    stock: 8,
-}
-
-/* let arrayProd = [prod1];
-
-const productos_1 = new ProductManager(arrayProd);
-
-console.log("agrego prod2:  -> producto diferente:");
-productos_1.addProduct(prod2);  // producto diferente
-productos_1.addProduct(prod3); // producto diferente
-console.log("------------------------");
-
-console.log("agrego prod1:  -> producto igual:");
-productos_1.addProduct(prod1);  //producto igual
-console.log("------------------------");
-
-
-console.log("Busco producto por ID: 1");
-productos_1.getProductById(1);
-console.log("------------------------");
-
-console.log("muestro todos los productos con getProducts:");
-productos_1.getProducts();
-console.log("------------------------");
-
-
-console.log("update un producto");
-productos_1.updateProduct(prod_copy);
-console.log("Luego del update muestro nuevamente los productos:");
-productos_1.getProducts();
-
-console.log("------------------------"); */
-
-
-/* console.log("DELETE un producto");
-productos_1.deleteProduct(1);
-console.log("Luego del DELETE muestro nuevamente los productos:");
-productos_1.getProducts(); */
-/* 
-console.log("------------------------"); */
-/* const productos_1 = new ProductManager(arrayProd);
-productos_1.addProduct(prod1);
-productos_1.addProduct(prod2);
-productos_1.addProduct(prod3);
-productos_1.addProduct(prod4);
-productos_1.addProduct(prod5);
-productos_1.addProduct(prod6);
-productos_1.addProduct(prod7);
-productos_1.addProduct(prod8);
-productos_1.addProduct(prod9);
-productos_1.addProduct(prod10);
-productos_1.addProduct(prod11); */
-

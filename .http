@@ -1,0 +1,45 @@
+POST http://localhost:8080/api/carts/
+Content-Type: application/json
+
+{
+    "id": 0,
+    "products": [
+        {
+            "product": 4,
+            "quantity": 31
+        },
+        {
+            "product": 3,
+            "quantity": 221
+        },
+        {
+            "product": 11,
+            "quantity": 79
+        }
+    ]
+}
+
+###
+
+GET http://localhost:8080/api/carts/
+
+
+###
+POST http://localhost:8080/api/products/
+Content-Type: application/json
+
+{
+    "id": 0,
+    "title": "Cartuchera",
+    "description": "lleno de todos los colores",
+    "price": 3881,
+    "thumbnail": "/cartuchera",
+    "code": "cartu999",
+    "stock": 17,
+    "category": "libreria"
+}
+
+###
+POST http://localhost:8080/api/carts/1/product/7
+Content-Type: application/json
+
