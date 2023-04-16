@@ -40,15 +40,17 @@ function postForm(e) {
     datos.stock = document.getElementById("stock").value;
     datos.category = document.getElementById("category").value;
 
-    if (!datos.title) {
-        alert("No puede estar vacio TITLE");
+    if (!datos.title || !datos.description || !datos.price 
+        || !datos.thumbnail || !datos.code || !datos.stock 
+        || !datos.category) {
+        alert("No puede estar vacío ningún campo.");
         return
     }
 
     /* let jsonData = JSON.stringify(datos);
     socket.emit('agregarProducto', jsonData); */
 
-    
+
     socket.emit('agregarProducto', datos);
 
 
