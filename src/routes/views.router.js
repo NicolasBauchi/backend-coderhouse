@@ -1,29 +1,66 @@
 import { Router } from "express";
+import __dirname from "../utils.js";
+import ProductManager from "../../ProductManager.js";
 
-const router = Router();
+const viewsRouter = Router();
 
-router.get("/", (req, res) => {
-    let user = users[Math.floor(Math.random() * users.length)]
+viewsRouter.get("/", (req, res) => {
+    //let user = users[Math.floor(Math.random() * users.length)]
+    let food = [
+        { name: "Hamburguesa", price: 3589 },
+        { name: "Banana", price: 123 },
+        { name: "Soda", price: 237 },
+        { name: "Pizza", price: 2100 },
+    ]
+    let user = {
+        name: 'Nico',
+        last_name: 'Bauchi',
+        role: "admin"
+    }
 
-    let testUser = {
-        title: "",
+    res.render('index', {
+        title: 'Ecommerce',
         user,
         isAdmin: user.role == 'admin',
         food,
-        style: "index.css",
+        style: "/static/css/index.css",
 
-    }
+    })
 
-
-    /* app.get('/vista', (req, res) => {
-        let testUser = {
-            name: 'Nico',
-            last_name: 'Bauchi',
-            title: 'Ecommerce',
-        }
-    
-        res.render('index', testUser)
-    }) */
 })
 
-export default router;
+//Mostrar productos con Http
+viewsRouter.get("/home", async (req, res) => {
+    let pManager = new ProductManager();
+
+    let losProductos = await pManager.getProducts();
+    let renderHome =
+    {
+        losProductos,
+        style: "/static/css/home.css"
+    };
+
+
+    res.render('home', renderHome)
+})
+
+//Mostrar productos pero con WebSockets
+viewsRouter.get("/realtimeproducts", (req, res) => {
+    let info = {
+        style: "/static/css/realTimeProducts.css",
+
+    }
+    res.render('realTimeProducts', info);
+
+})
+
+/* viewsRouter.post("/realTimeProducts", (req, res) => {
+
+
+}) */
+
+
+
+
+
+export default viewsRouter;

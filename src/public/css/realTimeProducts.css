@@ -1,0 +1,30 @@
+.formulario{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+/* .formulario h1{
+
+} */
+
+.formulario form{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+#ul_listado{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+#ul_listado li{
+    list-style: none;
+    border: 1px solid black;
+    padding: 10px;
+    background-color: aquamarine;
+}

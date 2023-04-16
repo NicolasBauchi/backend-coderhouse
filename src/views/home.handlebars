@@ -1,0 +1,21 @@
+<div>
+  <h1>Todos los productos agregados hasta el momento: <b><u>-CON HTTP-</u></b></h1>
+</div>
+
+<div class="listado">
+  <ul>
+    {{#each losProductos}}
+      <li>
+        <div><b>ID:</b> {{this.id}}</div>
+        <div><b>Title:</b> {{this.title}}</div>
+        <div><b>Description:</b> {{this.description}}</div>
+        <div><b>Price:</b> {{this.price}}</div>
+        <div><b>Thumbnail:</b> {{this.thumbnail}}</div>
+        <div><b>Code:</b> {{this.code}}</div>
+        <div><b>Stock:</b> {{this.stock}}</div>
+        <div><b>Category:</b> {{this.category}}</div>
+        <div><b>Status:</b> {{this.status}}</div>
+      </li>
+    {{/each}}
+  </ul>
+</div>
