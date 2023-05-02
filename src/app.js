@@ -5,6 +5,8 @@ import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
 import ProductManager from "../ProductManager.js";
+import objectConfig from "./config/objectConfig.js";
+import userRouter from "./routes/users.router.js";
 
 const app = express();
 app.use(express.json())
@@ -16,6 +18,8 @@ let PORT = 8080;
 const httpServer = app.listen(PORT, () => {
     console.log(`servidor arriba en el puerto ${PORT}!`);
 })
+//Coenxión a una BD con mongoose:
+objectConfig.connectDB();
 
 //DIRECTORIO STATIC
 app.use("/static", express.static(__dirname + '/public'))
@@ -36,11 +40,18 @@ app.use("/", viewsRouter);
 //Rutas API LOGICAS----
 // Products Router ______________________________
 app.use('/api/products/', productsRouter);
-// Products Router ______________________________
+// FIN Products Router ______________________________
 
 // Carts Router ______________________________
 app.use('/api/carts/', cartsRouter);
-// Carts Router ______________________________
+// FIN Carts Router ______________________________
+
+// Users Router
+app.use('/api/users/', userRouter);
+
+// FIN Rutas API LOGICAS----
+
+
 
 
 //Server SOCKET ->
@@ -52,15 +63,15 @@ io.on('connection', socket => {
     //respuesta
     console.log("Nuevo cliente conectado -> " + socket.id);
     const manager = new ProductManager();
-  
+
 
     //acá escucho un evento que se llama message desde el cliente
     socket.on('agregarProducto', data => {
         console.log("Datos recibidos:");
         console.log(data);
         console.log("----------------------");
-        
-        
+
+
         let resp = manager.addProduct(data);
         console.log(resp);
 

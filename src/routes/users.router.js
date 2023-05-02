@@ -1,18 +1,27 @@
 import { Router } from "express";
+import userModel from "../models/user.model.js";
 
 //Objeto
-const router = Router();
+const userRouter = Router();
 
 //Configurar enrutado:
 
-router.get('/', (req, res) => {
+userRouter.get('/', async (req, res) => {
     //Aca escribo el programa y lo que debe devolver al navegador cliente.
+    try {
+        let users = await userModel.find();
+        console.log(users);
+        
+    } catch (error) {
+        console.log(error);
+    }
+
     res.status(200).send("Hola");
 });
 
 
 //Exportar enrutado:
-module.exports = router;
+export default userRouter;
 
 /* Para utilizar esta configuración en app.js
     tengo que importarla en app.js:  const userRouter = require("PATH"),
