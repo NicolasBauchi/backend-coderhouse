@@ -1,5 +1,5 @@
 import { Router } from "express";
-import userModel from "../models/user.model.js";
+import userModel from "../DAO/models/user.model.js";
 
 //Objeto
 const userRouter = Router();
@@ -16,8 +16,9 @@ userRouter.get('/', async (req, res) => {
         console.log(error);
     }
 
-    res.status(200).send("Hola");
+    res.status(200).send("users");
 });
+
 
 
 //Exportar enrutado:

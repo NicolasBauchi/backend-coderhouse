@@ -4,7 +4,7 @@ import __dirname from "./utils.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
-import ProductManager from "../ProductManager.js";
+import ProductManager from "./DAO/ProductManager.js";
 import objectConfig from "./config/objectConfig.js";
 import userRouter from "./routes/users.router.js";
 
@@ -18,7 +18,7 @@ let PORT = 8080;
 const httpServer = app.listen(PORT, () => {
     console.log(`servidor arriba en el puerto ${PORT}!`);
 })
-//Coenxión a una BD con mongoose:
+//Conexión a una BD con mongoose:
 objectConfig.connectDB();
 
 //DIRECTORIO STATIC

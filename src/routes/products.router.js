@@ -1,6 +1,9 @@
 import { Router } from 'express';
 
-import ProductManager from '../../ProductManager.js'
+import ProductManager from '../DAO/ProductManager.js'
+
+import ProductManagerMongo from '../DAO/mongo/product.mongo.js';
+
 
 const productsRouter = Router();
 
@@ -53,9 +56,12 @@ productsRouter.post("/", (req, res) => {
     if (!prod) {
         res.send("No hay producto que ingresar.")
     } else {
-        let manager = new ProductManager();
+        /* let manager = new ProductManager();
 
-        res.send(manager.addProduct(prod));
+        res.send(manager.addProduct(prod)); */
+
+        let manager = new ProductManagerMongo();
+        res.send(manager.addProduct(prod))
     }
 
 })
