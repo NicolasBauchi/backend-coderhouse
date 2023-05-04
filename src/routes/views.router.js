@@ -1,6 +1,7 @@
 import { Router } from "express";
 import __dirname from "../utils.js";
 import ProductManager from "../DAO/ProductManager.js";
+import messagesManagerMongo from "../DAO/mongo/messages.mongo.js";
 
 const viewsRouter = Router();
 
@@ -54,13 +55,22 @@ viewsRouter.get("/realtimeproducts", (req, res) => {
 
 })
 
-viewsRouter.get("/chat", (req, res) => {
+viewsRouter.get("/chat", async (req, res) => {
 
-    let info = {
-        style: "/static/css/chat.css",
-    }
+    const manager = new messagesManagerMongo();
+    const result = await manager.getChat()
+        .then(logChat => {
 
-    res.render("chat", info);
+            let info = {
+                style: "/static/css/chat.css",
+                logChat
+            }
+
+            res.render("chat", info)
+        });
+
+
+
 
 })
 

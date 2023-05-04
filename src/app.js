@@ -91,22 +91,18 @@ io.on('connection', socket => {
 
 
     //CHAT
-    socket.on('envioMessage', data => {
-
+    socket.on('envioMessage', async message => {
+        console.log("el mensaje recibido:");
+        console.log(message);
         //Guardo mensaje en BD
-        console.log(managerMessages.addMessage(data));
+        await managerMessages.addMessage(message).then(() => {
+            io.emit("losMensajes", message)
+        });
+
 
 
 
     })
-
-    let elChat = managerMessages.getChat();
-    socket.emit("losMensajes", [elChat])
-
-    
-   /*  if (elChat) {
-        io.emit('losMensajes', [elChat])
-    } */
 
 })
 

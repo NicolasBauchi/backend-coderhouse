@@ -1,20 +1,28 @@
 <div>
-    <h1>Chat del Ecommerce -> con: <b><u>-Websockets-</u></b></h1>
+  <h1>Chat del Ecommerce -> con: <b><u>-Websockets-</u></b></h1>
 </div>
 
 <div class="chateo">
-    <h3>Usuario: <b><u id="usuarioName">Nicolas Bauchi</u></b></h3>
+  <h3>Usuario: <b><u id="usuarioName"></u></b></h3>
 
-    <form action="POST" id="formChat">
-        <input type="text" id="tuMensaje" name="tuMensaje" />
-        <button type="submit">Enviar</button>
-    </form>
+  <form action="POST" id="formChat">
+    <input type="text" id="tuMensaje" name="tuMensaje" />
+    <button type="submit">Enviar</button>
+  </form>
 
-
-    <ul id="losChats">
-
-    </ul>
+  <ul id="losChats">
+    {{!-- {{#if hayChat}}{{/if}} --}}
+      {{#each logChat}}
+        <li>
+          <div><b>Usuario:</b> {{logChat.usuario}}</div>
+          <div><b>Mensaje:</b> {{logChat.mensaje}}</div>
+        </li>
+      {{/each}}
+    
+  </ul>
 </div>
-
+<script
+  src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "
+></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/chats_sockets.js"></script>

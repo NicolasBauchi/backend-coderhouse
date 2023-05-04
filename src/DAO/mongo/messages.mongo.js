@@ -19,13 +19,20 @@ class messagesManagerMongo {
         let user = data.usuario;
         let message = data.mensaje;
 
-        if (!user || !message) {
+        /* if (!user || !message) {
             return "CAMPOS VACIOS - from svr line 23."
-        }
+        } */
 
         try {
-            const elMensaje = { user, message };
-            return await messagesModel.create(elMensaje);
+            /* const elMensaje = { user, message };
+            return await messagesModel.create(elMensaje); */
+            await messagesModel.create({ user, message }, function (error, doc) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log(doc);
+                }
+            });
         } catch (error) {
             return new Error(error);
         }

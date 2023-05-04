@@ -5,9 +5,16 @@ import { Schema, model } from "mongoose";
 const messagesCollection = "messages";
 
 const messagesSchema = new Schema({
+    _id: Number,
+    user: {
+        type: String,
+        required: true
+    },
 
-    user: { type: String, required: true },
-    message: { type: String, required: true }
+    message: {
+        type: String,
+        required: true
+    }
 
 });
 
