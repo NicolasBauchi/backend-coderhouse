@@ -1,0 +1,20 @@
+<div>
+    <h1>Chat del Ecommerce -> con: <b><u>-Websockets-</u></b></h1>
+</div>
+
+<div class="chateo">
+    <h3>Usuario: <b><u id="usuarioName">Nicolas Bauchi</u></b></h3>
+
+    <form action="POST" id="formChat">
+        <input type="text" id="tuMensaje" name="tuMensaje" />
+        <button type="submit">Enviar</button>
+    </form>
+
+
+    <ul id="losChats">
+
+    </ul>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/static/js/chats_sockets.js"></script>

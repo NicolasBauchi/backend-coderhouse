@@ -24,7 +24,7 @@ Content-Type: application/json
 GET http://localhost:8080/api/carts/
 
 
-###
+###POST con FileSystem
 POST http://localhost:8080/api/products/
 Content-Type: application/json
 
@@ -33,6 +33,20 @@ Content-Type: application/json
     "title": "Cartuchera",
     "description": "lleno de todos los colores",
     "price": 3881,
+    "thumbnail": "/cartuchera",
+    "code": "cartu999",
+    "stock": 17,
+    "category": "libreria"
+}
+
+###POST con MONGO
+POST http://localhost:8080/api/products/
+Content-Type: application/json
+
+{
+    "title": "Cartuchera",
+    "description": "lleno de todos los colores",
+    "price": 4779,
     "thumbnail": "/cartuchera",
     "code": "cartu999",
     "stock": 17,

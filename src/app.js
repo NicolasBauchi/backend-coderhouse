@@ -7,6 +7,7 @@ import viewsRouter from "./routes/views.router.js";
 import ProductManager from "./DAO/ProductManager.js";
 import objectConfig from "./config/objectConfig.js";
 import userRouter from "./routes/users.router.js";
+import messagesManagerMongo from "./DAO/mongo/messages.mongo.js";
 
 const app = express();
 app.use(express.json())
@@ -63,6 +64,8 @@ io.on('connection', socket => {
     //respuesta
     console.log("Nuevo cliente conectado -> " + socket.id);
     const manager = new ProductManager();
+    //const losMensajesChat = [];
+    const managerMessages = new messagesManagerMongo();
 
 
     //acá escucho un evento que se llama message desde el cliente
@@ -84,7 +87,29 @@ io.on('connection', socket => {
 
     let productos = manager.getProducts();
     io.emit("formProd", productos);
+
+
+
+    //CHAT
+    socket.on('envioMessage', data => {
+
+        //Guardo mensaje en BD
+        console.log(managerMessages.addMessage(data));
+
+
+
+    })
+
+    let elChat = managerMessages.getChat();
+    socket.emit("losMensajes", [elChat])
+
+    
+   /*  if (elChat) {
+        io.emit('losMensajes', [elChat])
+    } */
+
 })
+
 
 
 

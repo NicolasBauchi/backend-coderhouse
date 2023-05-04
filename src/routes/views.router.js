@@ -54,10 +54,15 @@ viewsRouter.get("/realtimeproducts", (req, res) => {
 
 })
 
-/* viewsRouter.post("/realTimeProducts", (req, res) => {
+viewsRouter.get("/chat", (req, res) => {
 
+    let info = {
+        style: "/static/css/chat.css",
+    }
 
-}) */
+    res.render("chat", info);
+
+})
 
 
 
