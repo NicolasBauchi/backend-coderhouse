@@ -122,10 +122,10 @@ export default class CartManager {
     }
 
     addProdToCart(cid, pid) {
-        let mensaje;
+        
         let int_pid = parseInt(pid);
         if (!cid || !pid) {
-            return mensaje = "Cart id o Prod ID no puede ser nulo.";
+            return "Cart id o Prod ID no puede ser nulo.";
         }
 
         //Obtener cart por Nro id, luego agregar producto con
@@ -148,7 +148,7 @@ export default class CartManager {
             carrito.products[IndexEncontrado].quantity = auxQty;
 
         } else {
-            
+
             //Si no encontró PID entonces sumo prod entero.
             let nuevoProd = {
                 product: int_pid,

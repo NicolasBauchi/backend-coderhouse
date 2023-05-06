@@ -7,28 +7,33 @@ import ProductManagerMongo from '../DAO/mongo/product.mongo.js';
 
 const productsRouter = Router();
 
+
+//Con File System
+//const losProductos = new ProductManager();
+
+//Con Mongo
+const losProductos = new ProductManagerMongo();
+
 //Devolver productos:
 productsRouter.get("/", async (req, res) => {
 
     let limit = req.query.limit;
     console.log("valor de limit -> " + limit);
 
-    let productos = new ProductManager();
-
     if (!limit) {
-        res.send(await productos.getProducts());
+        res.send(await losProductos.getProducts());
         console.log("entro if line 29 !limit ");
 
     } else {
         console.log("entro else line 32 limit ");
-        let listado = await productos.getProducts();
+        let listado = await losProductos.getProducts();
 
         if (limit < listado.length) {
             console.log("entro if line 36 limit < listado ");
             res.send(listado.slice(0, limit));
         } else {
             console.log("entro else line 39 limit > listado");
-            console.log("Valor de cantidad de productos en lsitado line 40 -> " + listado.length);
+            console.log("Valor de cantidad de productos en listado line 40 -> " + listado.length);
             res.send(listado);
         }
     }
@@ -41,13 +46,10 @@ productsRouter.get(`/:pid`, async (req, res) => {
     if (!idProduct) { //si esta vacio
         res.send("Campo vacío.");
     } else {
-
-        let listado = new ProductManager();
-        const encontrado = await listado.getProductById(idProduct);
+        const encontrado = await losProductos.getProductById(idProduct);
 
         res.send(encontrado);
     }
-
 })
 
 productsRouter.post("/", (req, res) => {
@@ -56,12 +58,7 @@ productsRouter.post("/", (req, res) => {
     if (!prod) {
         res.send("No hay producto que ingresar.")
     } else {
-        /* let manager = new ProductManager();
-
-        res.send(manager.addProduct(prod)); */
-
-        let manager = new ProductManagerMongo();
-        res.send(manager.addProduct(prod))
+        res.send(losProductos.addProduct(prod))
     }
 
 })
@@ -74,8 +71,7 @@ productsRouter.put("/:pid", (req, res) => {
     if (!prod) {
         res.send(`No hay producto que modificar. ${idProd ? " " : 'Verifica id.'}  ${prod ? null : 'Verifica campos producto.'}`);
     } else {
-        let manager = new ProductManager();
-        manager.updateProduct(prod);
+        losProductos.updateProduct(prod);
         res.send(`Producto: ${prod.title} modificado correctamente.`);
     }
 })
@@ -86,21 +82,11 @@ productsRouter.delete("/:pid", (req, res) => {
     if (!prodId) {
         res.send("No hay producto que eliminar. Verifica id.");
     } else {
-        //let manager = new ProductManager();
-
-        //manager.deleteProduct(prodId);
+        losProductos.deleteProduct(prodId);
         res.send("Eliminado con éxito.");
     }
 
 })
-
-
-
-
-
-
-
-
 
 /* // Cargar info:
 

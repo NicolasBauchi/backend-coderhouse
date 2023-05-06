@@ -21,7 +21,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/api/carts/
+GET http://localhost:8080/api/carts/1
 
 
 ###POST con FileSystem
@@ -44,13 +44,13 @@ POST http://localhost:8080/api/products/
 Content-Type: application/json
 
 {
-    "title": "Cartuchera",
-    "description": "lleno de todos los colores",
-    "price": 4779,
-    "thumbnail": "/cartuchera",
-    "code": "cartu999",
-    "stock": 17,
-    "category": "libreria"
+    "title": "Gorro",
+    "description": "rojo y verde",
+    "price": 17800,
+    "thumbnail": "/gorro",
+    "code": "gorroDoble",
+    "stock": 258,
+    "category": "indumentaria"
 }
 
 ###
