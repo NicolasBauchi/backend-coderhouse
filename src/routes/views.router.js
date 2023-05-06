@@ -60,7 +60,8 @@ viewsRouter.get("/chat", async (req, res) => {
     const manager = new messagesManagerMongo();
     const result = await manager.getChat()
         .then(logChat => {
-
+            console.log("MUESTRO MSJ DE BD:");
+            console.log(logChat);
             let info = {
                 style: "/static/css/chat.css",
                 logChat

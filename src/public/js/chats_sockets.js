@@ -1,12 +1,12 @@
 
 console.log("Estableciendo conexión con servidor...");
 eventoForm();
+//Conexion handshake con el servidor
 const socket = io();
 
-//let usuario = document.getElementById('usuarioName').innerText;
 var usuario = ""
 
-
+//Pido Nombre usuario al cliente:
 swal.fire({
     title: 'Identificate',
     input: 'text',
@@ -21,37 +21,25 @@ swal.fire({
     document.getElementById('usuarioName').innerText = usuario;
 })
 
-
-socket.on("losMensajes", async data => {
+//Recibo los mensajes desde el servidor:
+socket.on("losMensajes", data => {
 
     let chat = document.getElementById('losChats');
 
     let contenido = 
-        `<div><b>Usuario:</b> ${data.usuario}</div>
-        <div><b>Mensaje:</b> ${data.mensaje}</div>`;
+        `<div><b>Usuario:</b> ${data.user}</div>
+        <div><b>Mensaje:</b> ${data.message}</div>`;
 
     let mensaje = document.createElement("li");
     mensaje.innerHTML = contenido;
 
     chat.appendChild(mensaje);
 
-
-
-
-
-    /* prueba -->
-    let chats = ''
-    data.forEach(unMsj => {
-        chats +=
-            `<li><div><b>Usuario:</b> ${unMsj.usuario}</div>
-                <div><b>Mensaje:</b> ${unMsj.mensaje}</div></li>`
-    })
-    chat.innerHTML = chats; */
 });
 
 
 
-
+//Evento para obtener mensaje del INPUT del cliente.
 function eventoForm() {
     const doc = document.getElementById("formChat");
     doc.addEventListener("submit", postForm)
@@ -61,16 +49,17 @@ function postForm(e) {
 
     e.preventDefault();
     let datos = {};
-    datos._id = Math.floor(Math.random() * 100000);
-    datos.usuario = document.getElementById('usuarioName').innerText;
-    datos.mensaje = document.getElementById("tuMensaje").value;
+    /* datos._id = Math.floor(Math.random() * 100000); */
+    datos.user = document.getElementById('usuarioName').innerText;
+    datos.message = document.getElementById("tuMensaje").value;
 
     document.getElementById("tuMensaje").value = "";
 
-    if (!datos.mensaje) {
+    if (!datos.message) {
         alert("Mensaje vacío? :/ \n No se admiten. Se debe escribir algo en el mensaje.");
         return
     }
 
+    //envio mensaje al servidor:
     socket.emit('envioMessage', datos);
 }

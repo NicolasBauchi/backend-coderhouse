@@ -68,7 +68,7 @@ io.on('connection', socket => {
     const managerMessages = new messagesManagerMongo();
 
 
-    //acá escucho un evento que se llama message desde el cliente
+
     socket.on('agregarProducto', data => {
         console.log("Datos recibidos:");
         console.log(data);
@@ -80,9 +80,6 @@ io.on('connection', socket => {
 
         let productos = manager.getProducts();
         io.emit("formProd", productos);
-        /* Para pruebas:
-        let jsonParsedData = [JSON.parse(data)];
-        socket.emit("formProd", jsonParsedData); */
     })
 
     let productos = manager.getProducts();
@@ -91,14 +88,15 @@ io.on('connection', socket => {
 
 
     //CHAT
+    //recibo mensajes desde un cliente:
     socket.on('envioMessage', async message => {
         console.log("el mensaje recibido:");
         console.log(message);
         //Guardo mensaje en BD
-        await managerMessages.addMessage(message).then(() => {
-            io.emit("losMensajes", message)
-        });
+        await managerMessages.addMessage(message);
 
+        //Derivo el mensaje recibido hacia todos los clientes:
+        io.emit("losMensajes", message);
 
 
 

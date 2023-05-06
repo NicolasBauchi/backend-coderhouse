@@ -14,8 +14,8 @@
     {{!-- {{#if hayChat}}{{/if}} --}}
       {{#each logChat}}
         <li>
-          <div><b>Usuario:</b> {{logChat.usuario}}</div>
-          <div><b>Mensaje:</b> {{logChat.mensaje}}</div>
+          <div><b>Usuario:</b> {{this.user}}</div>
+          <div><b>Mensaje:</b> {{this.message}}</div>
         </li>
       {{/each}}
     
