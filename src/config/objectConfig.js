@@ -1,5 +1,8 @@
 import { connect } from "mongoose";
-require('dotenv').config()
+import dotenv from "dotenv";
+
+dotenv.config();
+//require('dotenv').config()
 let url = process.env.MONGO_URL
 // aca poner URL de conexion a DB mongo ATLAS ONLINE.
 
