@@ -1,22 +1,12 @@
 //Esquema de product
+/* import { Schema, model } from "mongoose"; */
+import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
-import { Schema, model } from "mongoose";
 
 const productCollection = "products";
 
-const productSchema = new Schema({
-
-    /* 
-        "title": "anteojos",
-        "description": "con lentes anti reflex",
-        "price": "22050",
-        "thumbnail": "/lentesnico",
-        "code": "lentes998760",
-        "stock": "12",
-        "category": "optica",
-        "id": 5,
-        "status": true
-    */
+const productSchema = new mongoose.Schema({
 
     title: { type: String, required: true },
     description: { type: String, required: true },
@@ -27,8 +17,12 @@ const productSchema = new Schema({
     category: { type: String, required: true },
     status: { type: Boolean },
 
-});
+})
 
-const productModel = model(productCollection, productSchema);
+//Agregando paginate
+//PLUGIN
+productSchema.plugin(mongoosePaginate);
+
+const productModel = mongoose.model(productCollection, productSchema);
 
 export default productModel;

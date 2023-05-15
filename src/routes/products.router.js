@@ -17,26 +17,26 @@ const losProductos = new ProductManagerMongo();
 //Devolver productos:
 productsRouter.get("/", async (req, res) => {
 
-    let limit = req.query.limit;
-    console.log("valor de limit -> " + limit);
-
-    if (!limit) {
-        res.send(await losProductos.getProducts());
-        console.log("entro if line 29 !limit ");
-
-    } else {
-        console.log("entro else line 32 limit ");
-        let listado = await losProductos.getProducts();
-
-        if (limit < listado.length) {
-            console.log("entro if line 36 limit < listado ");
-            res.send(listado.slice(0, limit));
-        } else {
-            console.log("entro else line 39 limit > listado");
-            console.log("Valor de cantidad de productos en listado line 40 -> " + listado.length);
-            res.send(listado);
+    let resultado = await losProductos.getFiltredPaginate(req.query)
+    const { docs, hasPrevPage, hasNextPage, prevPage,
+        nextPage, totalPages, page, prevLink, nextLink } = resultado
+    //console.log(resultado);
+    res.send(
+        {
+            status: "success",
+            payload: docs,
+            totalPages,
+            prevPage,
+            nextPage,
+            page,
+            hasPrevPage,
+            hasNextPage,
+            prevLink,
+            nextLink
         }
-    }
+    );
+
+   
 })
 
 productsRouter.get(`/:pid`, async (req, res) => {

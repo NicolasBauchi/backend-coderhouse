@@ -1,7 +1,9 @@
 import { Router } from "express";
 import __dirname from "../utils.js";
 import ProductManager from "../DAO/ProductManager.js";
+import ProductManagerMongo from "../DAO/mongo/product.mongo.js"
 import messagesManagerMongo from "../DAO/mongo/messages.mongo.js";
+import cartManagerMongo from "../DAO/mongo/cart.mongo.js";
 
 const viewsRouter = Router();
 
@@ -60,8 +62,7 @@ viewsRouter.get("/chat", async (req, res) => {
     const manager = new messagesManagerMongo();
     const result = await manager.getChat()
         .then(logChat => {
-            console.log("MUESTRO MSJ DE BD:");
-            console.log(logChat);
+
             let info = {
                 style: "/static/css/chat.css",
                 logChat
@@ -69,9 +70,57 @@ viewsRouter.get("/chat", async (req, res) => {
 
             res.render("chat", info)
         });
+})
+
+viewsRouter.get("/products", async (req, res) => {
+    const manager = new ProductManagerMongo();
+    manager.getFiltredPaginate(req.query)
+        .then(losProductos => {
+
+            const { docs, hasPrevPage,
+                hasNextPage,
+                prevPage,
+                nextPage,
+                totalPages,
+                page,
+                prevLink,
+                nextLink } = losProductos
+
+            let info = {
+                style: "/static/css/products.css",
+                docs,
+                hasPrevPage,
+                hasNextPage,
+                prevPage,
+                nextPage,
+                totalPages,
+                page,
+                prevLink,
+                nextLink
+            }
+
+            res.render("products", info)
+        });
 
 
+})
 
+viewsRouter.get("/carts/:cid", async (req, res) => {
+    const { cid } = req.params.cid
+    if (!cid) {
+        return "No puede estar vacío ID del carrito. Vuelve a intentar."
+    }
+    let manager = new cartManagerMongo()
+    manager.getCart(cid).then((carrito) => {
+        let { products } = carrito;
+        console.log(products);
+        let info = {
+            style: "/static/css/cart.css",
+            products
+        }
+
+        res.render("cart", info)
+    })
 
 })
 

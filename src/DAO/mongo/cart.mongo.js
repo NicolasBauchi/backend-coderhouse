@@ -32,7 +32,37 @@ class cartManagerMongo {
 
     async getCart(cid) {
         try {
-            return await cartModel.findOne({ id: cid });
+            let algo = await cartModel.find({ id: cid });
+            console.log(algo);
+            return algo
+        } catch (error) {
+            return new Error(error)
+        }
+    }
+
+    async updateCart(carrito) {
+
+        const { cid, data } = carrito
+
+        if (!cid || !data) {
+            return "ID o Datos de body faltantes. Revisar."
+        }
+
+        try {
+            return await cartModel.updateOne({ id: cid }, { $set: { "products": data } })
+        } catch (error) {
+            return new Error(error)
+        }
+    }
+
+    async deleteAllProductsCart(cid) {
+
+        if (!cid) {
+            return "ID faltante. Revisar."
+        }
+
+        try {
+            return await cartModel.updateOne({ id: cid }, { $set: { "products": [] } })
         } catch (error) {
             return new Error(error)
         }
@@ -99,6 +129,79 @@ class cartManagerMongo {
         } catch (error) {
             return new Error(error)
         }
+    }
+
+    async deleteProdToCart(cid, pid) {
+
+
+        if (!cid || !pid) {
+            return "Cart id o Prod ID no puede ser nulo.";
+        }
+        let int_pid = parseInt(pid);
+
+        //1_Obtengo productos del cart:
+        var info = "";
+        var losProductos = "";
+        try {
+            info = await cartModel.findOne({ id: cid }, { products: 1 })
+            if (!info) {
+                return "No existe el ID del carro que ingresaste."
+            }
+            losProductos = info.products;
+        } catch (error) {
+            return new Error(error)
+        }
+
+
+        //2_Itero productos para eliminar el que quiero:
+        let eliminacionProd = losProductos.filter(el => el.product != int_pid)
+        losProductos = eliminacionProd;
+
+        //3_Guardo items
+        try {
+            return await cartModel.updateOne({ id: cid }, { $set: { "products": losProductos } })
+        } catch (error) {
+            return new Error(error)
+        }
+    }
+
+    async updateCantProdToCart(data) {
+
+        let { cid, pid, cantidad } = data;
+
+        if (!cid || !pid || !cantidad) {
+            return "Cart id, Prod ID o cantidad no puede ser nulo.";
+        }
+
+        let int_pid = parseInt(pid);
+        let int_cant = parseInt(cantidad);
+
+        //1_Obtengo productos del cart:
+        var info = "";
+        var losProductos = "";
+        try {
+            info = await cartModel.findOne({ id: cid }, { products: 1 })
+            if (!info) {
+                return "No existe el ID del carro que ingresaste."
+            }
+            losProductos = info.products;
+        } catch (error) {
+            return new Error(error)
+        }
+
+
+        //2_Itero productos para modificar su cantidad.
+        let IndexEncontrado = losProductos.findIndex(el => el.product == int_pid);
+        losProductos[IndexEncontrado].quantity = int_cant;
+
+
+        //3_Guardo items
+        try {
+            return await cartModel.updateOne({ id: cid }, { $set: { "products": losProductos } })
+        } catch (error) {
+            return new Error(error)
+        }
+
     }
 
 }
