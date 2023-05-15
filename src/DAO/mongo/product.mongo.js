@@ -21,6 +21,7 @@ class ProductManagerMongo {
     async addProduct(newProduct) {
 
         newProduct.status = true;
+        //falta que cree ID solo automaticamente...
 
         //GUARDAR PROD EN BD:
         try {

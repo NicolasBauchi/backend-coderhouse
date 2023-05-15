@@ -105,8 +105,8 @@ viewsRouter.get("/products", async (req, res) => {
 
 })
 
-viewsRouter.get("/carts/:cid", async (req, res) => {
-    const { cid } = req.params.cid
+viewsRouter.get(`/carts/:cid`, async (req, res) => {
+    const cid  = req.params.cid
     if (!cid) {
         return "No puede estar vacío ID del carrito. Vuelve a intentar."
     }

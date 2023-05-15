@@ -33,6 +33,7 @@ class cartManagerMongo {
     async getCart(cid) {
         try {
             let algo = await cartModel.find({ id: cid });
+           // let algo = await cartModel.find();
             console.log(algo);
             return algo
         } catch (error) {
