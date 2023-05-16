@@ -106,14 +106,15 @@ viewsRouter.get("/products", async (req, res) => {
 })
 
 viewsRouter.get(`/carts/:cid`, async (req, res) => {
-    const cid  = req.params.cid
+    const cid = req.params.cid
     if (!cid) {
         return "No puede estar vacío ID del carrito. Vuelve a intentar."
     }
     let manager = new cartManagerMongo()
     manager.getCart(cid).then((carrito) => {
+       
         let { products } = carrito;
-        console.log(products);
+        console.log("muestro products:",products);
         let info = {
             style: "/static/css/cart.css",
             products

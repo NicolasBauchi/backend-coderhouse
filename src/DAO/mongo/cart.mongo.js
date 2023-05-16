@@ -32,10 +32,7 @@ class cartManagerMongo {
 
     async getCart(cid) {
         try {
-            let algo = await cartModel.find({ id: cid });
-           // let algo = await cartModel.find();
-            console.log(algo);
-            return algo
+            return await cartModel.findOne({ _id: cid }, { products: 1 }).populate("products.product");
         } catch (error) {
             return new Error(error)
         }
@@ -89,7 +86,7 @@ class cartManagerMongo {
         if (!cid || !pid) {
             return "Cart id o Prod ID no puede ser nulo.";
         }
-        let int_pid = parseInt(pid);
+        let int_pid = pid;
 
         //1_Obtengo productos del cart:
         var info = "";
