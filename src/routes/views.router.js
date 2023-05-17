@@ -112,9 +112,9 @@ viewsRouter.get(`/carts/:cid`, async (req, res) => {
     }
     let manager = new cartManagerMongo()
     manager.getCart(cid).then((carrito) => {
-       
+
         let { products } = carrito;
-        console.log("muestro products:",products);
+        console.log("muestro products:", products);
         let info = {
             style: "/static/css/cart.css",
             products

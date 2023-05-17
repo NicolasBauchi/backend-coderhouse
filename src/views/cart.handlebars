@@ -1,10 +1,13 @@
-<h2>Productos del carrito solicitado:</h2>
+
 <div class="listado">
+  <h2>Productos del carrito solicitado:</h2>
   <ul>
     {{#each products}}
       <li>
-        <div><b>Producto: </b>{{this.product}}</div>
+        <div><b>Producto: </b>{{this.product.title}}</div>
+        <div><b>Descripción: </b>{{this.product.description}}</div>
         <div><b>Quantity: </b>{{this.quantity}}</div>
+
       </li>
     {{/each}}
   </ul>

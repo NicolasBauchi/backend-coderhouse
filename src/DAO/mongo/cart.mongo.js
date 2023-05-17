@@ -32,7 +32,7 @@ class cartManagerMongo {
 
     async getCart(cid) {
         try {
-            return await cartModel.findOne({ _id: cid }, { products: 1 }).populate("products.product");
+            return await cartModel.findOne({ _id: cid }, { products: 1 }).populate("products.product").lean();
         } catch (error) {
             return new Error(error)
         }
@@ -60,7 +60,7 @@ class cartManagerMongo {
         }
 
         try {
-            return await cartModel.updateOne({ id: cid }, { $set: { "products": [] } })
+            return await cartModel.updateOne({ _id: cid }, { $set: { "products": [] } })
         } catch (error) {
             return new Error(error)
         }
@@ -92,7 +92,7 @@ class cartManagerMongo {
         var info = "";
         var losProductos = "";
         try {
-            info = await cartModel.findOne({ id: cid }, { products: 1 })
+            info = await cartModel.findOne({ _id: cid }, { products: 1 })
             if (!info) {
                 return "No existe el ID del carro que ingresaste."
             }
@@ -123,7 +123,7 @@ class cartManagerMongo {
 
         //3_Guardo items
         try {
-            return await cartModel.updateOne({ id: cid }, { $set: { "products": losProductos } })
+            return await cartModel.updateOne({ _id: cid }, { $set: { "products": losProductos } })
         } catch (error) {
             return new Error(error)
         }
@@ -178,7 +178,7 @@ class cartManagerMongo {
         var info = "";
         var losProductos = "";
         try {
-            info = await cartModel.findOne({ id: cid }, { products: 1 })
+            info = await cartModel.findOne({ _id: cid }, { products: 1 })
             if (!info) {
                 return "No existe el ID del carro que ingresaste."
             }
@@ -195,7 +195,7 @@ class cartManagerMongo {
 
         //3_Guardo items
         try {
-            return await cartModel.updateOne({ id: cid }, { $set: { "products": losProductos } })
+            return await cartModel.updateOne({ _id: cid }, { $set: { "products": losProductos } })
         } catch (error) {
             return new Error(error)
         }
