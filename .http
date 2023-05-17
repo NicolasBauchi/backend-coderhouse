@@ -70,3 +70,6 @@ Content-Type: application/json
 ###
 DELETE http://localhost:8080/api/carts/6462f480f3e92ce9de71d8cd
 Content-Type: application/json
+
+###
+GET http://localhost:8080/products?limit=20&query=%27{%22category%22:%22libreria%22}%27

@@ -51,7 +51,6 @@ class ProductManagerMongo {
         //obteniendo parametros de la peticion:
         const { limit = 1, page = 1, sort = 1, query } = busqueda;
 
-
         let filtros = {}
 
         if (limit) {
@@ -62,14 +61,10 @@ class ProductManagerMongo {
         } else {
             page = 1;
         }
-
         if (sort) {
             filtros.sort = { price: sort };
         }
-        if (query) {
 
-            console.log(query);
-        }
         filtros.lean = true;
 
         try {
@@ -77,14 +72,9 @@ class ProductManagerMongo {
 
             if (!query) {
                 //Si no hay query, búsqueda general
-
                 return await productModel.paginate({}, filtros);
-
-                //datosBD = await productModel.paginate({}, filtros);
             } else {
-                return await productModel.paginate({ query }, filtros);
-
-                //datosBD = await productModel.paginate({ query }, filtros);
+                return await productModel.paginate(JSON.parse(query), filtros);
             }
 
 
