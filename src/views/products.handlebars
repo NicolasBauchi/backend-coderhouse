@@ -1,4 +1,7 @@
 <div class="listado">
+  {{#if existError}}
+      <h1>{{errorPage}}</h1>
+    {{/if}}
   <ul>
       {{#each docs}}
         <li>

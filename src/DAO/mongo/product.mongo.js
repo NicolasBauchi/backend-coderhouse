@@ -49,18 +49,28 @@ class ProductManagerMongo {
 
     async getFiltredPaginate(busqueda) {
         //obteniendo parametros de la peticion:
-        const { limit = 1, page = 1, sort = 1, query } = busqueda;
-
+        const { limit = 1, page, sort = 1, query } = busqueda;
         let filtros = {}
+
+        /* Como forma de protección a los valores ingresados se agrega
+        que en el parametro Page deba serciorarse de que sea un numero lo que
+        se recibe, y no otra cosa: */
+        if (page) {
+            if (!isNaN(page)) {
+                filtros.page = page;
+            } else {
+                const errorPage = 471;
+                return errorPage
+            }
+
+        } else {
+            page = 1;
+        }
 
         if (limit) {
             filtros.limit = limit;
         }
-        if (page) {
-            filtros.page = page;
-        } else {
-            page = 1;
-        }
+
         if (sort) {
             filtros.sort = { price: sort };
         }
@@ -68,22 +78,15 @@ class ProductManagerMongo {
         filtros.lean = true;
 
         try {
-            //let datosBD = "";
-
             if (!query) {
                 //Si no hay query, búsqueda general
                 return await productModel.paginate({}, filtros);
             } else {
                 return await productModel.paginate(JSON.parse(query), filtros);
             }
-
-
-
-
         } catch (error) {
             return new Error(error)
         }
-
 
     }
 
