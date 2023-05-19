@@ -77,13 +77,16 @@ viewsRouter.get("/products", async (req, res) => {
     manager.getFiltredPaginate(req.query)
         .then(losProductos => {
 
-            if (losProductos == 471) {
+            /*  if (losProductos == 471) {
                 let error =
                 {
                     existError: true,
                     errorPage: "No se puede ingresar datos que no sea un número de página."
-                }
-                res.render("products", error)
+                } */
+
+            if (losProductos.docs == undefined || losProductos == 999
+                || losProductos.docs.length === 0) {
+                res.render("products", { errorPage: true })
             } else {
                 const { docs, hasPrevPage,
                     hasNextPage,

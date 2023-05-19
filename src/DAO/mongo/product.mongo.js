@@ -58,13 +58,13 @@ class ProductManagerMongo {
         if (page) {
             if (!isNaN(page)) {
                 filtros.page = page;
-            } else {
-                const errorPage = 471;
-                return errorPage
+            }else{
+                console.log("ESTAS INGRESANDO STRING");
+                return 999;
             }
 
         } else {
-            page = 1;
+            filtros.page = 1;
         }
 
         if (limit) {
