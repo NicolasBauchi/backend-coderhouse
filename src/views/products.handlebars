@@ -1,8 +1,33 @@
-<div class="listado">
-  {{#if errorPage}}
-      <h1> Ocurrió un error. Página solicida no existe.</h1>
+<header>
+  <nav>
+    {{#if userLoged.loged}}
+      <a href="/api/session/logout"><li>Logout</li></a>
+    {{else}}
+      <a href="/login"><li>Login</li></a>
     {{/if}}
-  <ul>
+
+    <a href="/register"><li>Register</li></a>
+
+    <a href="/products"><li>Products</li></a>
+  </nav>
+</header>
+
+<div id="listado">
+
+  {{#if errorPage}}
+    <h1> Ocurrió un error. Página solicida no existe.</h1>
+
+  {{else}}
+
+    {{#if userLoged.loged}}
+      <div id="tituloUser">
+        <h4>Bienvenido
+          {{userLoged.first_name}}
+          {{userLoged.last_name}}</h4>
+        <span>(cuenta: {{userLoged.role}})</span>
+      </div>
+    {{/if}}
+    <ul>
       {{#each docs}}
         <li>
           <div><b>ID:</b> {{this.id}}</div>
@@ -17,11 +42,8 @@
           <div><button><b>Agregar al carrito</b></button></div>
         </li>
       {{/each}}
-</div>
+    </ul>
 
-<div>
-
-  {{!-- <center> --}}
     {{#if hasPrevPage}}
       <a href="/products/?page={{prevPage}}"><button>Anterior</button></a>
     {{/if}}
@@ -29,5 +51,6 @@
     {{#if hasNextPage}}
       <a href="/products/?page={{nextPage}}"><button>Siguiente</button></a>
     {{/if}}
- {{!--  </center> --}}
+  {{/if}}
+
 </div>

@@ -1,0 +1,48 @@
+<header>
+  <nav>
+    {{#if loged}}
+      <a href="/api/session/logout"><li>Logout</li></a>
+    {{else}}
+      <a href="/login"><li>Login</li></a>
+    {{/if}}
+
+    <a href="/register"><li>Register</li></a>
+
+    <a href="/products"><li>Products</li></a>
+  </nav>
+</header>
+
+<div id="form_register">
+  <h1>REGISTRARSE</h1>
+  <form action="/api/session/register" method="post" id="register">
+
+    <div>
+      <label for="username">Ingrese nombre de usuario</label>
+      <input type="text" name="username" />
+    </div>
+
+    <div>
+      <label for="first_name">Ingrese su nombre</label>
+      <input type="text" name="first_name" />
+    </div>
+
+    <div>
+      <label for="last_name">Ingrese su apellido</label>
+      <input type="text" name="last_name" />
+    </div>
+
+    <div>
+      <label for="email">Ingrese su correo</label>
+      <input type="text" name="email" />
+    </div>
+
+    <div>
+      <label for="password">Ingresar password</label>
+      <input type="password" name="password" id="" />
+    </div>
+
+    <br />
+    <button type="submit">Registrarme</button>
+
+  </form>
+</div>

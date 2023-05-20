@@ -73,3 +73,30 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8080/products?limit=20&query=%27{%22category%22:%22libreria%22}%27
+
+
+### Registro
+POST http://localhost:8080/api/session/register
+Content-Type: application/json
+
+{
+    "username": "nicolas", 
+    "first_name": "Nicolas", 
+    "last_name": "Bauchi", 
+    "email": "pruebaNico@gmail.com", 
+    "password": "123456789"
+}
+
+### LOGUEO
+POST http://localhost:8080/api/session/login
+Content-Type: application/json
+
+{ 
+    "email": "pruebaNico@gmail.com", 
+    "password": "123456789"
+}
+
+### DES-LOGUEO
+GET http://localhost:8080/api/session/logout
+Content-Type: application/json
+

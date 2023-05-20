@@ -8,11 +8,32 @@ import ProductManager from "./DAO/ProductManager.js";
 import objectConfig from "./config/objectConfig.js";
 import userRouter from "./routes/users.router.js";
 import messagesManagerMongo from "./DAO/mongo/messages.mongo.js";
+import session from "express-session";
+import sessionRouter from "./routes/session.router.js";
+import MongoStore from "connect-mongo";
+import dotenv from "dotenv";
+
+dotenv.config(); //.env
+let url = process.env.MONGO_URL
 
 const app = express();
 app.use(express.json())
-app.use(express.urlencoded({ extended: true })) //Linea para que el servidor pueda interpretar mejor los datos complejos
+
+//Linea para que el servidor pueda interpretar mejor los datos complejos
 //Que viajen desde la URL y mapearlos correctamente en el req.query.
+app.use(express.urlencoded({ extended: true }))
+
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: url,
+        mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+        ttl: 30,
+    }),
+    secret: "qweqweqwe",
+    resave: false,
+    saveUninitialized: false
+}))
+
 
 
 let PORT = 8080;
@@ -49,6 +70,11 @@ app.use('/api/carts/', cartsRouter);
 
 // Users Router
 app.use('/api/users/', userRouter);
+// FIN Users Router ______________________________
+
+// Session Router ______________________________
+app.use('/api/session/', sessionRouter);
+// FIN Session Router ______________________________
 
 // FIN Rutas API LOGICAS----
 
@@ -104,9 +130,8 @@ io.on('connection', socket => {
 
 })
 
-
-
-
-
-
+app.use((err, req, res, next) => {
+    console.log(err)
+    res.status(500).send('Todo mal')
+})
 

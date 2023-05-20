@@ -8,7 +8,10 @@ import cartManagerMongo from "../DAO/mongo/cart.mongo.js";
 const viewsRouter = Router();
 
 viewsRouter.get("/", (req, res) => {
-    //let user = users[Math.floor(Math.random() * users.length)]
+
+    res.redirect("/login")
+
+    /* //let user = users[Math.floor(Math.random() * users.length)]
     let food = [
         { name: "Hamburguesa", price: 3589 },
         { name: "Banana", price: 123 },
@@ -28,7 +31,7 @@ viewsRouter.get("/", (req, res) => {
         food,
         style: "/static/css/index.css",
 
-    })
+    }) */
 
 })
 
@@ -73,16 +76,15 @@ viewsRouter.get("/chat", async (req, res) => {
 })
 
 viewsRouter.get("/products", async (req, res) => {
+    let userLoged = { loged: false }
+    if (req.session.user) {
+        let { first_name, last_name, role, username } = req.session.user;
+        userLoged = { first_name, last_name, loged: true, role, username }
+    }
+
     const manager = new ProductManagerMongo();
     manager.getFiltredPaginate(req.query)
         .then(losProductos => {
-
-            /*  if (losProductos == 471) {
-                let error =
-                {
-                    existError: true,
-                    errorPage: "No se puede ingresar datos que no sea un número de página."
-                } */
 
             if (losProductos.docs == undefined || losProductos == 999
                 || losProductos.docs.length === 0) {
@@ -107,7 +109,8 @@ viewsRouter.get("/products", async (req, res) => {
                     totalPages,
                     page,
                     prevLink,
-                    nextLink
+                    nextLink,
+                    userLoged
                 }
 
                 res.render("products", info)
@@ -139,6 +142,48 @@ viewsRouter.get(`/carts/:cid`, async (req, res) => {
 
 })
 
+
+//Vista de login
+viewsRouter.get("/login", (req, res) => {
+
+    let loged = false
+    if (req.session.user) {
+        loged = true
+    }
+
+    if (!loged) {
+        let info = {
+            style: "/static/css/login.css",
+            loged
+        }
+        res.render("login", info)
+
+
+    } else {
+        //Si ya había logueado entonces no dería volver aparecer para loguear...
+        //redirecciono a /products
+        //Redirigir a productos:
+        res.redirect("/products")
+    }
+
+
+});
+
+//Vista de registro
+viewsRouter.get("/register", (req, res) => {
+
+    let loged = false
+    if (req.session.user) {
+        loged = true
+    }
+
+    let info = {
+        style: "/static/css/register.css",
+        loged
+    }
+
+    res.render("register", info)
+});
 
 
 
