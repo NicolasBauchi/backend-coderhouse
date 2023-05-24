@@ -55,6 +55,7 @@ sessionRouter.post("/login", async (req, res) => {
 sessionRouter.post("/register", async (req, res) => {
     try {
         const { username, first_name, last_name, email, password } = req.body
+        let role = "user";
 
         //Validación para que vengan todos los campos completados
         if (!username || !first_name || !last_name || !email || !password) {
@@ -71,7 +72,8 @@ sessionRouter.post("/register", async (req, res) => {
             first_name,
             last_name,
             email,
-            password  /// encriptar
+            password,  /// encriptar
+            role
         }
         let resultUser = await userModel.create(nuevoUsuario)
 

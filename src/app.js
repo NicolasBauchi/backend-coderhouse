@@ -14,7 +14,7 @@ import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
 
 dotenv.config(); //.env
-let url = process.env.MONGO_URL
+//let url = process.env.MONGO_URL
 
 const app = express();
 app.use(express.json())
@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: url,
+        mongoUrl: process.env.MONGO_URL,
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
         ttl: 30,
     }),
