@@ -12,6 +12,9 @@ import session from "express-session";
 import sessionRouter from "./routes/session.router.js";
 import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
+import passport from "passport";
+import { initPassportGithub } from "./config/passport.config.js";
+import { initPassportLocal } from "./config/passport.config.js";
 
 dotenv.config(); //.env
 //let url = process.env.MONGO_URL
@@ -78,7 +81,11 @@ app.use('/api/session/', sessionRouter);
 
 // FIN Rutas API LOGICAS----
 
-
+//PASSPORT
+initPassportLocal();
+initPassportGithub();
+passport.use(passport.initialize())
+passport.use(passport.session())
 
 
 //Server SOCKET ->
@@ -132,6 +139,6 @@ io.on('connection', socket => {
 
 app.use((err, req, res, next) => {
     console.log(err)
-    res.status(500).send('Todo mal')
+    res.status(500).send(' ¡ Todo mal ! - Descripción: -> ' + err)
 })
 

@@ -1,15 +1,31 @@
 import { Router } from "express";
 import userModel from "../DAO/models/user.model.js";
 import { auth } from "../middlewares/authentication.middleware.js";
+import passport from "passport";
+//import { isValidPassword, createHash } from "../config/bcryptHash.js"
 
 
 const sessionRouter = Router();
 
+//Login con Github ----------
+
+/* Primer link se llama desde el Front */
+sessionRouter.get("/github", passport.authenticate("github", { scope: ["user:email"] }), async (req, res) => { })
+
+//Segundo link, es un callback que debe coincidir con el seteado en la APP de Github, realiza redirección al home.
+sessionRouter.get("/githubcallback", passport.authenticate("github", { failureRedirect: "/login" }), async (req, res) => {
+    //La estrategia devuelve un usuario, cargarlo al objeto de session:
+    req.session.user = req.user;
+    res.redirect("/");
+})
+//Fin login con Github ----------
 
 //Ingresar
-sessionRouter.post("/login", async (req, res) => {
+sessionRouter.post("/login", passport.authenticate('login', { failureRedirect: '/faillogin' }), async (req, res) => {
     const { email, password } = req.body;
+    if (!email || !password) return res.status(400).send({ status: "error", error: "Campos incompletos" })
 
+    //Permiso especial Coder:
     if (email == "adminCoder@coder.com" && password == "adminCod3r123") {
 
         req.session.user = {
@@ -22,44 +38,61 @@ sessionRouter.post("/login", async (req, res) => {
 
     } else {
         //Busco en la BD si
-        const datosBD = await userModel.findOne({ email, password })
+        // const userBD = await userModel.findOne({ email })
 
         //Si no encuentra un usuario registrado en la BD, devolver mensaje.
-        if (!datosBD) {
-            return res.status(404).send({ status: "error", message: "No existe usuario en la base de datos." })
-        }
+        if (!req.user) return res.status(401).send({ status: "error", message: "Credenciales inválidas." })
 
         req.session.user = {
-            username: datosBD.username,
-            first_name: datosBD.first_name,
-            last_name: datosBD.last_name,
-            email: datosBD.email,
-            role: datosBD.role
+            username: req.user.username,
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            role: req.user.role
         }
+
+
+
+
+        /* if (!isValidPassword(userBD, password)) return res.status(403).send({ status: "error", error: " Contraseña incorrecta" })
+        if (!userBD) return res.status(404).send({ status: "error", message: "No existe usuario en la base de datos." })
+        req.session.user = userBD; */
+
+        /* version anterior
+            req.session.user = {
+            username: userBD.username,
+            first_name: userBD.first_name,
+            last_name: userBD.last_name,
+            email: userBD.email,
+            role: userBD.role
+        } */
     }
-    console.log(req.session.user);
+
     //Redirigir a productos:
     res.redirect("/products")
-
-    /* res.send({
-        status: "succes",
-        message: "login succes",
-        session: req.session.user
-    }) */
-
-
 });
+
+sessionRouter.get('/faillogin', async (req, res) => {
+    console.log('Falló la estrategia')
+    res.send({ status: 'error', error: 'falló autenticación' })
+})
 
 
 //Registrarse
-sessionRouter.post("/register", async (req, res) => {
+sessionRouter.post('/register', passport.authenticate('register', { failureRedirect: '/failregister' }), async (req, res) => {
+    res.send({ status: 'success', message: 'User registered' })
+})
+
+
+//Register anterior: (SIN authenticate passport local)
+/* sessionRouter.post("/register", async (req, res) => {
     try {
         const { username, first_name, last_name, email, password } = req.body
         let role = "user";
 
         //Validación para que vengan todos los campos completados
         if (!username || !first_name || !last_name || !email || !password) {
-            res.send({ status: 'error', message: "Ningún campo debe estar vacío para el registro." })
+            res.status(400).send({ status: 'error', message: "Ningún campo debe estar vacío para el registro." })
         }
 
         // Chequeo que el mail no esté registrado ya.
@@ -72,7 +105,7 @@ sessionRouter.post("/register", async (req, res) => {
             first_name,
             last_name,
             email,
-            password,  /// encriptar
+            password: createHash(password),  /// encriptar
             role
         }
         let resultUser = await userModel.create(nuevoUsuario)
@@ -93,7 +126,13 @@ sessionRouter.post("/register", async (req, res) => {
         })
     }
 
-});
+}); */
+
+sessionRouter.get('/failregister', async (req, res) => {
+    console.log('Falló la estrategia')
+    res.send({ status: 'error', error: 'falló autenticación' })
+})
+
 
 
 //Desloguearse

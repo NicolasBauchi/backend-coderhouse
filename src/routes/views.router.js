@@ -145,7 +145,7 @@ viewsRouter.get(`/carts/:cid`, async (req, res) => {
 
 //Vista de login
 viewsRouter.get("/login", (req, res) => {
-
+    
     let loged = false
     if (req.session.user) {
         loged = true
