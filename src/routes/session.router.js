@@ -21,10 +21,10 @@ sessionRouter.get("/githubcallback", passport.authenticate("github", { failureRe
 //Fin login con Github ----------
 
 //Ingresar
-sessionRouter.post("/login", passport.authenticate('login', { failureRedirect: '/faillogin' }), async (req, res) => {
+sessionRouter.post("/login", passport.authenticate('login', { failureRedirect: '/api/session/faillogin' }), async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).send({ status: "error", error: "Campos incompletos" })
-
+    console.log("ENTRO A /LOGIN", req.body);
     //Permiso especial Coder:
     if (email == "adminCoder@coder.com" && password == "adminCod3r123") {
 
@@ -35,6 +35,7 @@ sessionRouter.post("/login", passport.authenticate('login', { failureRedirect: '
             email: "adminCoder@coder.com",
             role: "admin"
         }
+        console.log("req.session", req.session.user);
 
     } else {
         //Busco en la BD si
@@ -79,7 +80,7 @@ sessionRouter.get('/faillogin', async (req, res) => {
 
 
 //Registrarse
-sessionRouter.post('/register', passport.authenticate('register', { failureRedirect: '/failregister' }), async (req, res) => {
+sessionRouter.post('/register', passport.authenticate('register', { failureRedirect: '/api/session/failregister' }), async (req, res) => {
     res.send({ status: 'success', message: 'User registered' })
 })
 

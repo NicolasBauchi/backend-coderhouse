@@ -7,7 +7,7 @@ import { isValidPassword, createHash } from "../config/bcryptHash.js"
 const LocalStrategy = local.Strategy;
 
 export const initPassportLocal = () => {
-    
+
     passport.use("register", new LocalStrategy({
         passReqToCallback: true,
         usernameField: "email"
@@ -39,26 +39,56 @@ export const initPassportLocal = () => {
         usernameField: 'email'
     }, async (username, password, done) => {
 
-        const userDB = await userModel.findOne({ email: username })
+        //Chequeo si es USER ESPECIAL CODER
+        if (username == "adminCoder@coder.com" && password == "adminCod3r123") {
 
-        try {
-            if (!userDB) return done(null, false)
+            const usuarioAdmin = {
+                username: "CoderHouse",
+                first_name: "Coder",
+                last_name: "House",
+                email: "adminCoder@coder.com",
+                role: "admin"
+            }
+            return done(null, usuarioAdmin)
 
-            if (!isValidPassword(password, userDB)) return done(null, false)
-            return done(null, userDB)
+        } else {
+            //Si no es usuario CODER entonces continuar chequeo LOGIN:
+            const userDB = await userModel.findOne({ email: username })
 
-        } catch (error) {
-            return done(error)
+            try {
+                if (!userDB) return done(null, false)
+
+                if (!isValidPassword(userDB, password)) return done(null, false)
+                return done(null, userDB)
+
+            } catch (error) {
+                return done(error)
+            }
+
         }
     }))
 
     passport.serializeUser((user, done) => {
-        done(null, user._id);
+        if (user.email == "adminCoder@coder.com") {
+            done(null, user);
+        }
+        else {
+            done(null, user._id);
+        }
+
+
     });
 
     passport.deserializeUser(async (id, done) => {
-        let user = await userModel.findById(id);
-        done(null, user);
+        if (username == "adminCoder@coder.com") {
+            done(null, id);
+        }
+        else {
+            let user = await userModel.findById(id);
+            done(null, user);
+        }
+
+
     })
 
 }
