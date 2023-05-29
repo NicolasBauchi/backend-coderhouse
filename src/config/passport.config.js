@@ -104,7 +104,7 @@ export const initPassportGithub = () => {
     }, async (accessToken, refreshToken, profile, done) => {
 
         try {
-            console.log(profile);
+            console.log("Informacion Profile",profile);
             let user = await userModel.findOne({ email: profile._json.email })
             /* Si no existe el usuario en BD se lo crea: */
             if (!user) {
@@ -112,10 +112,11 @@ export const initPassportGithub = () => {
                     username: profile.username,
                     first_name: profile._json.name.split(" ")[0],
                     last_name: profile._json.name.split(" ")[1],
-                    email: !profile._json.email ? "ejemplo_xqSalioNULL@hotmail.com" : profile._json.email,
-                    password: "cambiar",
+                    email: profile._json.email,
+                    password: " ",
                     role: profile._json.type
                 }
+                /* !profile._json.email ? "SalioNULL@hotmail.com" : profile._json.email, */
 
                 let result = await userModel.create(newUser);
                 done(null, result)

@@ -35,7 +35,6 @@ sessionRouter.post("/login", passport.authenticate('login', { failureRedirect: '
             email: "adminCoder@coder.com",
             role: "admin"
         }
-        console.log("req.session", req.session.user);
 
     } else {
         //Busco en la BD si
