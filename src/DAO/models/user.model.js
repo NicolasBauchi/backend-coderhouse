@@ -36,7 +36,19 @@ const userSchema = new Schema({
     role: {
         type: String,
         default: "user"
+    },
+
+    age: {
+        type: Number,
+        required: true
+    },
+
+    cart: {
+        type: Schema.Types.ObjectId,
+        ref: "carts",
+        default: null
     }
+
 
 })
 

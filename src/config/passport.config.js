@@ -11,27 +11,34 @@ export const initPassportLocal = () => {
     passport.use("register", new LocalStrategy({
         passReqToCallback: true,
         usernameField: "email"
-    }, async (req, username, password, done) => {
-        const { first_name, last_name } = req.body;
-        const usernameBody = req.body.username
+    }, async (req, emailreg, password, done) => {
+        const { username, first_name, last_name, age } = req.body;
+        //const usernameBody = req.body.email
+
+        //Chequeo que la contraseña no sea espacios vacíos:
+        if (!password || password.trim().length > 0) {
+            return done(null, false)
+        }
 
         try {
-            let userBD = await userModel.findOne({ email: username })
+            let userBD = await userModel.findOne({ email: emailreg })
             if (userBD) return done(null, false)
 
             let newUser = {
-                usernameBody,
+                username,
                 first_name,
                 last_name,
-                email: username,
-                password: createHash(password)
+                email: emailreg,
+                password: createHash(password),
+                age,
+                cart: null
             }
 
             let result = await userModel.create(newUser)
             return done(null, result)
 
         } catch (error) {
-            return done('Error al obtener el usuario' + error)
+            return done('Error al obtener el usuario (Register Local) ' + error)
         }
     }))
 
@@ -93,9 +100,6 @@ export const initPassportLocal = () => {
 
 }
 
-
-
-
 export const initPassportGithub = () => {
     passport.use("github", new GitHubStrategy({
         clientID: "Iv1.768caeff3d022941",
@@ -104,7 +108,7 @@ export const initPassportGithub = () => {
     }, async (accessToken, refreshToken, profile, done) => {
 
         try {
-            console.log("Informacion Profile",profile);
+            console.log("Informacion Profile", profile);
             let user = await userModel.findOne({ email: profile._json.email })
             /* Si no existe el usuario en BD se lo crea: */
             if (!user) {

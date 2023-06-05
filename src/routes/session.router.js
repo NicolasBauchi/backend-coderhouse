@@ -1,9 +1,6 @@
 import { Router } from "express";
-import userModel from "../DAO/models/user.model.js";
 import { auth } from "../middlewares/authentication.middleware.js";
 import passport from "passport";
-//import { isValidPassword, createHash } from "../config/bcryptHash.js"
-
 
 const sessionRouter = Router();
 
@@ -33,7 +30,8 @@ sessionRouter.post("/login", passport.authenticate('login', { failureRedirect: '
             first_name: "Coder",
             last_name: "House",
             email: "adminCoder@coder.com",
-            role: "admin"
+            role: "admin",
+            age: 18
         }
 
     } else {
@@ -83,8 +81,60 @@ sessionRouter.post('/register', passport.authenticate('register', { failureRedir
     res.send({ status: 'success', message: 'User registered' })
 })
 
+sessionRouter.get('/failregister', async (req, res) => {
+    console.log('Falló la estrategia')
+    res.send({ status: 'error', error: 'falló autenticación' })
+})
+
+
+//Desloguearse
+sessionRouter.get("/logout", (req, res) => {
+    req.session.destroy(err => {
+        if (err) return res.send({ status: "error", error: err })
+
+        res.redirect("/login")
+        //res.send("Te has deslogueado correctamente.")
+    })
+});
+
+
+//Ruta privada cceso admin
+sessionRouter.get("/privado", auth, (req, res) => {
+
+    res.send('Todo lo que esta acá solo lo puede ver un admin loagueado')
+});
+
+//Función con session
+sessionRouter.get('/counter', (req, res) => {
+    if (req.session.counter) {
+        req.session.counter++
+        res.send(`se ha visitado el sitio ${req.session.counter} veces.`)
+    } else {
+        req.session.counter = 1
+        res.send('Bienvenido')
+    }
+})
+
+
+sessionRouter.get('/current', (req, res) => {
+    const user = req.session.user;
+
+    if (!user) {
+        return res.status(404).send("No hay usuario logueado.")
+    } else {
+
+        return res.status(200).send("Tu usuario es: \n" + JSON.stringify(user))
+    }
+
+
+})
+
+
+export default sessionRouter;
+
 
 //Register anterior: (SIN authenticate passport local)
+
 /* sessionRouter.post("/register", async (req, res) => {
     try {
         const { username, first_name, last_name, email, password } = req.body
@@ -127,42 +177,3 @@ sessionRouter.post('/register', passport.authenticate('register', { failureRedir
     }
 
 }); */
-
-sessionRouter.get('/failregister', async (req, res) => {
-    console.log('Falló la estrategia')
-    res.send({ status: 'error', error: 'falló autenticación' })
-})
-
-
-
-//Desloguearse
-sessionRouter.get("/logout", (req, res) => {
-    req.session.destroy(err => {
-        if (err) return res.send({ status: "error", error: err })
-
-        res.redirect("/login")
-        //res.send("Te has deslogueado correctamente.")
-    })
-});
-
-
-//Ruta privada cceso admin
-sessionRouter.get("/privado", auth, (req, res) => {
-
-    res.send('Todo lo que esta acá solo lo puede ver un admin loagueado')
-});
-
-//Función con session
-sessionRouter.get('/counter', (req, res) => {
-    if (req.session.counter) {
-        req.session.counter++
-        res.send(`se ha visitado el sitio ${req.session.counter} veces.`)
-    } else {
-        req.session.counter = 1
-        res.send('Bienvenido')
-    }
-})
-
-
-
-export default sessionRouter;
