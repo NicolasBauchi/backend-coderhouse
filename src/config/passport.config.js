@@ -118,7 +118,8 @@ export const initPassportGithub = () => {
                     last_name: profile._json.name.split(" ")[1],
                     email: profile._json.email,
                     password: " ",
-                    role: profile._json.type
+                    role: profile._json.type,
+                    age: 617
                 }
                 /* !profile._json.email ? "SalioNULL@hotmail.com" : profile._json.email, */
 
