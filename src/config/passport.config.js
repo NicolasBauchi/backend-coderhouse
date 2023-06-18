@@ -3,8 +3,14 @@ import GitHubStrategy from 'passport-github2';
 import local from "passport-local"
 import userModel from "../DAO/models/user.model.js";
 import { isValidPassword, createHash } from "../config/bcryptHash.js"
+import Services from "../service/index.js";
+import dotenv from "dotenv";
+dotenv.config(); //.env
 
 const LocalStrategy = local.Strategy;
+const adminMail = process.env.ADMIN_EMAIL
+const adminPassword = process.env.ADMIN_PASSWORD
+const { userService } = Services;
 
 export const initPassportLocal = () => {
 
@@ -21,7 +27,8 @@ export const initPassportLocal = () => {
         }
 
         try {
-            let userBD = await userModel.findOne({ email: emailreg })
+            //let userBD = await userModel.findOne({ email: emailreg })
+            let userBD = await userService.getByEmail(emailreg)
             if (userBD) return done(null, false)
 
             let newUser = {
@@ -47,7 +54,7 @@ export const initPassportLocal = () => {
     }, async (username, password, done) => {
 
         //Chequeo si es USER ESPECIAL CODER
-        if (username == "adminCoder@coder.com" && password == "adminCod3r123") {
+        if (username == adminMail && password == adminPassword) {
 
             const usuarioAdmin = {
                 username: "CoderHouse",
@@ -76,7 +83,7 @@ export const initPassportLocal = () => {
     }))
 
     passport.serializeUser((user, done) => {
-        if (user.email == "adminCoder@coder.com") {
+        if (user.email == adminMail) {
             done(null, user);
         }
         else {
@@ -87,7 +94,7 @@ export const initPassportLocal = () => {
     });
 
     passport.deserializeUser(async (id, done) => {
-        if (username == "adminCoder@coder.com") {
+        if (username == adminMail) {
             done(null, id);
         }
         else {

@@ -1,23 +1,17 @@
 import { Router } from "express";
-import userModel from "../DAO/models/user.model.js";
+import userController from "../controllers/users.controller.js";
+const { getUsers, createUsers, updateUsers, deleteUsers } = new userController();
 
 //Objeto
 const userRouter = Router();
 
 //Configurar enrutado:
 
-userRouter.get('/', async (req, res) => {
-    //Aca escribo el programa y lo que debe devolver al navegador cliente.
-    try {
-        let users = await userModel.find();
-        console.log(users);
-        
-    } catch (error) {
-        console.log(error);
-    }
+userRouter.get('/', getUsers);
+userRouter.post('/', createUsers)
+userRouter.put('/:uid', updateUsers)
+userRouter.delete('/:uid', deleteUsers)
 
-    res.status(200).send("users");
-});
 
 
 

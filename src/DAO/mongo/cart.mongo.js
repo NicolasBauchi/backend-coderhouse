@@ -1,6 +1,6 @@
 import cartModel from "../models/cart.model.js";
 
-class cartManagerMongo {
+export default class cartManagerMongo {
 
     async addCart(cart) {
         //Obtener último ID de los carts:
@@ -203,5 +203,3 @@ class cartManagerMongo {
     }
 
 }
-
-export default cartManagerMongo;

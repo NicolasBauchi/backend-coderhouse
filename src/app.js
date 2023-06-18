@@ -15,9 +15,12 @@ import dotenv from "dotenv";
 import passport from "passport";
 import { initPassportGithub } from "./config/passport.config.js";
 import { initPassportLocal } from "./config/passport.config.js";
+import cors from "cors";
 
 dotenv.config(); //.env
 //let url = process.env.MONGO_URL
+
+
 
 const app = express();
 app.use(express.json())
@@ -45,6 +48,9 @@ const httpServer = app.listen(PORT, () => {
 })
 //Conexión a una BD con mongoose:
 objectConfig.connectDB();
+
+//Utilización de CORS
+app.use(cors())
 
 //DIRECTORIO STATIC
 app.use("/static", express.static(__dirname + '/public'))

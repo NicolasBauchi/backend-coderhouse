@@ -1,6 +1,6 @@
 import messagesModel from "../models/messages.model.js";
 
-class messagesManagerMongo {
+export default class messagesManagerMongo {
 
     //obtengo todos los mensajes guardados en la BD (chat completo)
     async getChat() {
@@ -43,6 +43,3 @@ class messagesManagerMongo {
     }
 
 }
-
-
-export default messagesManagerMongo;

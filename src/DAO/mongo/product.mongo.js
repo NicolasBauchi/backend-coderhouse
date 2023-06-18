@@ -1,6 +1,6 @@
 import productModel from "../models/product.model.js";
 
-class ProductManagerMongo {
+export default class ProductManagerMongo {
 
     async getProducts() {
         try {
@@ -58,7 +58,7 @@ class ProductManagerMongo {
         if (page) {
             if (!isNaN(page)) {
                 filtros.page = page;
-            }else{
+            } else {
                 console.log("ESTAS INGRESANDO STRING");
                 return 999;
             }
@@ -91,5 +91,3 @@ class ProductManagerMongo {
     }
 
 }
-
-export default ProductManagerMongo;
