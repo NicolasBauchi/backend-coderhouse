@@ -1,7 +1,6 @@
 import passport from "passport";
 import GitHubStrategy from 'passport-github2';
 import local from "passport-local"
-import userModel from "../DAO/models/user.model.js";
 import { isValidPassword, createHash } from "../config/bcryptHash.js"
 import Services from "../service/index.js";
 import dotenv from "dotenv";
@@ -18,34 +17,33 @@ export const initPassportLocal = () => {
         passReqToCallback: true,
         usernameField: "email"
     }, async (req, emailreg, password, done) => {
-        const { username, first_name, last_name, age } = req.body;
-        //const usernameBody = req.body.email
+        const { username, first_name, last_name, age, role="User" } = req.body;
 
         //Chequeo que la contraseña no sea espacios vacíos:
-        if (!password || password.trim().length > 0) {
+        if (!password || password.trim().length <= 0) {
             return done(null, false)
         }
 
         try {
-            //let userBD = await userModel.findOne({ email: emailreg })
             let userBD = await userService.getByEmail(emailreg)
             if (userBD) return done(null, false)
-
             let newUser = {
                 username,
                 first_name,
                 last_name,
                 email: emailreg,
                 password: createHash(password),
+                role,
                 age,
                 cart: null
             }
 
-            let result = await userModel.create(newUser)
+            //let result = await userModel.create(newUser)
+            let result = await userService.create(newUser)
             return done(null, result)
 
         } catch (error) {
-            return done('Error al obtener el usuario (Register Local) ' + error)
+            return done('Error al crear el usuario (Register Local) ' + error)
         }
     }))
 
@@ -67,7 +65,8 @@ export const initPassportLocal = () => {
 
         } else {
             //Si no es usuario CODER entonces continuar chequeo LOGIN:
-            const userDB = await userModel.findOne({ email: username })
+            const userDB = await userService.getByEmail(username);
+            //const userDB = await userModel.findOne({ email: username })
 
             try {
                 if (!userDB) return done(null, false)
@@ -78,7 +77,6 @@ export const initPassportLocal = () => {
             } catch (error) {
                 return done(error)
             }
-
         }
     }))
 
@@ -98,7 +96,8 @@ export const initPassportLocal = () => {
             done(null, id);
         }
         else {
-            let user = await userModel.findById(id);
+            let user = await userService.getById(id);
+            //let user = await userModel.findById(id);
             done(null, user);
         }
 
@@ -116,7 +115,9 @@ export const initPassportGithub = () => {
 
         try {
             console.log("Informacion Profile", profile);
-            let user = await userModel.findOne({ email: profile._json.email })
+
+            //let user = await userModel.findOne({ email: profile._json.email })
+            let user = await userService.getByEmail(profile._json.email);
             /* Si no existe el usuario en BD se lo crea: */
             if (!user) {
                 let newUser = {
@@ -130,28 +131,27 @@ export const initPassportGithub = () => {
                 }
                 /* !profile._json.email ? "SalioNULL@hotmail.com" : profile._json.email, */
 
-                let result = await userModel.create(newUser);
+                //let result = await userModel.create(newUser);
+                let result = await userService.create(newUser);
                 done(null, result)
             } else {
                 //Usuario existe en BD:
                 done(null, user)
             }
-
         } catch (error) {
             return done(error)
         }
 
     }));
 
-
     passport.serializeUser((user, done) => {
         done(null, user._id);
     });
 
     passport.deserializeUser(async (id, done) => {
-        let user = await userModel.findById(id);
+        //let user = await userModel.findById(id);
+        let user = await userService.getById(id)
         done(null, user);
     })
-
 
 }

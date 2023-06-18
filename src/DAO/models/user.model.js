@@ -8,8 +8,7 @@ const userSchema = new Schema({
 
     username: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
 
     first_name: {
@@ -35,7 +34,7 @@ const userSchema = new Schema({
 
     role: {
         type: String,
-        default: "user"
+        default: "User"
     },
 
     age: {
@@ -48,8 +47,6 @@ const userSchema = new Schema({
         ref: "carts",
         default: null
     }
-
-
 })
 
 const userModel = model(userCollection, userSchema) // -> (1-> collection donde se va a guardar, 2-> el modelo/estructura)

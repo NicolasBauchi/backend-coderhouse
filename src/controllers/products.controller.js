@@ -1,4 +1,4 @@
-import Services from "../service";
+import Services from "../service/index.js";
 const { productService } = Services;
 
 export default class productsController {

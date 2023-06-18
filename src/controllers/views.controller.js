@@ -1,4 +1,4 @@
-import Services from "../service/index.js"
+import Services from "../service/index.js";
 
 const { productService, messageService, cartService } = Services;
 
@@ -46,47 +46,64 @@ export default class viewsController {
     }
 
     products = async (req, res) => {
+        let info = {}
+
         let userLoged = { loged: false }
-        if (req.session.user) {
+        if (!req.session.user) {
+            info = {
+                style: "/static/css/errorPage.css",
+                errorMsg: "401 - Unauthorized"
+            }
+            res.render("errorPage", info)
+        }
+        else {
             let { first_name, last_name, role, username } = req.session.user;
             userLoged = { first_name, last_name, loged: true, role, username }
+
+            productService.getFiltredPaginate(req.query)
+                .then(losProductos => {
+
+                    if (losProductos.docs == undefined || losProductos == 999) {
+
+                        info = {
+                            style: "/static/css/errorPage.css",
+                            errorMsg: "500 - Server error"
+                        }
+                        res.render("errorPage", info)
+                    } else {
+                        const { docs, hasPrevPage,
+                            hasNextPage,
+                            prevPage,
+                            nextPage,
+                            totalPages,
+                            page,
+                            prevLink,
+                            nextLink } = losProductos
+
+                        let info = {
+                            style: "/static/css/products.css",
+                            docs,
+                            hasPrevPage,
+                            hasNextPage,
+                            prevPage,
+                            nextPage,
+                            totalPages,
+                            page,
+                            prevLink,
+                            nextLink,
+                            userLoged
+                        }
+
+                        res.render("products", info)
+                    }
+                });
+
         }
 
-        /* const manager = new ProductManagerMongo();
-        manager.getFiltredPaginate(req.query) */
-        productService.getFiltredPaginate(req.query)
-            .then(losProductos => {
 
-                if (losProductos.docs == undefined || losProductos == 999
-                    || losProductos.docs.length === 0) {
-                    res.render("products", { errorPage: true })
-                } else {
-                    const { docs, hasPrevPage,
-                        hasNextPage,
-                        prevPage,
-                        nextPage,
-                        totalPages,
-                        page,
-                        prevLink,
-                        nextLink } = losProductos
+        console.log(userLoged);
+        console.log(req.session.user);
 
-                    let info = {
-                        style: "/static/css/products.css",
-                        docs,
-                        hasPrevPage,
-                        hasNextPage,
-                        prevPage,
-                        nextPage,
-                        totalPages,
-                        page,
-                        prevLink,
-                        nextLink,
-                        userLoged
-                    }
-
-                    res.render("products", info)
-                }
-            });
     }
 
     cartById = async (req, res) => {

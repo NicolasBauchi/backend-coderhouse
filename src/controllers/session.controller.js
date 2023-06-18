@@ -77,18 +77,28 @@ export default class sessionController {
     }
 
     privateURL = (req, res) => {
-
         res.send('Todo lo que esta acá solo lo puede ver un admin loagueado')
     }
 
     failLogin = (req, res) => {
-        console.log('Falló la estrategia')
-        res.send({ status: 'error', error: 'Falló la autenticación en el servidor.' })
+        let info = {
+            style: "/static/css/errorPage.css",
+            errorMsg: "401 - Unauthorized"
+        }
+        res.render("errorPage", info)
+        /* console.log('Falló la estrategia')
+        res.send({ status: 'error', error: 'Falló la autenticación en el servidor.' }) */
     }
 
     failRegister = (req, res) => {
-        console.log('Falló la estrategia')
-        res.send({ status: 'error', error: 'falló autenticación' })
+        
+        let info = {
+            style: "/static/css/errorPage.css",
+            errorMsg: "Falló autenticación"
+        }
+        res.render("errorPage", info)
+       /*  console.log('Falló la estrategia')
+        res.send({ status: 'error', error: 'falló autenticación' }) */
     }
 
     githubCallBack = async (req, res) => {
