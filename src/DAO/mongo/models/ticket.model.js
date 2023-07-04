@@ -4,10 +4,6 @@ const ticketCollection = "tickets";
 
 const ticketSchema = new Schema({
 
-    id: {
-        type: String,
-        required: true
-    },
     code: {
         type: String,
         required: true,
