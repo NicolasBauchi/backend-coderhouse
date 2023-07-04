@@ -1,10 +1,9 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import __dirname from "./utils.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
-import ProductManager from "./DAO/ProductManager.js";
+import ProductManager from "./DAO/fileSystem/ProductManager.js";
 import objectConfig from "./config/objectConfig.js";
 import userRouter from "./routes/users.router.js";
 import messagesManagerMongo from "./DAO/mongo/messages.mongo.js";
@@ -16,11 +15,13 @@ import passport from "passport";
 import { initPassportGithub } from "./config/passport.config.js";
 import { initPassportLocal } from "./config/passport.config.js";
 import cors from "cors";
+import pruebasRuta from "./routes/pruebas.router.js";
+/* import __dirname from "./config/dirName.js"; */
 
 dotenv.config(); //.env
-//let url = process.env.MONGO_URL
+//ejemplo => let url = process.env.MONGO_URL
 
-
+const __dirname = "C:\\Users\\Nico\\Documents\\CURSOS\\Programacion backend\\src";
 
 const app = express();
 app.use(express.json())
@@ -47,7 +48,7 @@ const httpServer = app.listen(PORT, () => {
     console.log(`servidor arriba en el puerto ${PORT}!`);
 })
 //Conexión a una BD con mongoose:
-objectConfig.connectDB();
+/* objectConfig.connectDB(); */
 
 //Utilización de CORS
 app.use(cors())
@@ -61,6 +62,7 @@ app.use("/static", express.static(__dirname + '/public'))
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
+/* app.set('views',  'C:\\Users\\Nico\\Documents\\CURSOS\\Programacion backend\\src\\views') */
 app.set('view engine', 'handlebars')
 
 //RUTA DE VISTAS
@@ -84,6 +86,10 @@ app.use('/api/users/', userRouter);
 // Session Router ______________________________
 app.use('/api/session/', sessionRouter);
 // FIN Session Router ______________________________
+
+//Pruebas Router
+app.use('/api/pruebas/', pruebasRuta);
+//FIN Pruebas Router
 
 // FIN Rutas API LOGICAS----
 

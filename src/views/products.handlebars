@@ -9,6 +9,16 @@
     <a href="/register"><li>Register</li></a>
 
     <a href="/products"><li>Products</li></a>
+
+    <a id="anchorCarrito" href="/carts/0">
+      <li style="border: 0px;"><img
+          src="/static/img/shopping_cart_512px.png"
+          alt="cart"
+          width="25px"
+          height="25px"
+        />
+      </li>
+    </a>
   </nav>
 </header>
 
@@ -30,16 +40,23 @@
     <ul>
       {{#each docs}}
         <li>
-          <div><b>ID:</b> {{this.id}}</div>
-          <div><b>Title:</b> {{this.title}}</div>
-          <div><b>Description:</b> {{this.description}}</div>
-          <div><b>Price:</b> {{this.price}}</div>
-          <div><b>Thumbnail:</b> {{this.thumbnail}}</div>
-          <div><b>Code:</b> {{this.code}}</div>
-          <div><b>Stock:</b> {{this.stock}}</div>
-          <div><b>Category:</b> {{this.category}}</div>
-          <div><b>Status:</b> {{this.status}}</div>
-          <div><button><b>Agregar al carrito</b></button></div>
+          <form action="/" id="formProdCarrito">
+            <div><b>ID:</b> <span id="form_id">{{this.id}}</span></div>
+            <div><b>Title:</b> <span id="form_title">{{this.title}}</span></div>
+            <div><b>Description:</b>
+              <span id="form_description">{{this.description}}</span></div>
+            <div><b>Price: $</b>
+              <span id="form_price">{{this.price}}</span></div>
+            <div><b>Thumbnail:</b>
+              <span id="form_thumbnail">{{this.thumbnail}}</span></div>
+            <div><b>Code:</b> <span id="form_code">{{this.code}}</span></div>
+            <div><b>Stock:</b> <span id="form_stock">{{this.stock}}</span></div>
+            <div><b>Category:</b>
+              <span id="form_category">{{this.category}}</span></div>
+            <div><b>Status:</b>
+              <span id="form_status">{{this.status}}</span></div>
+            <div><button type="submit"><b>Agregar al carrito</b></button></div>
+          </form>
         </li>
       {{/each}}
     </ul>
@@ -54,3 +71,5 @@
   {{/if}}
 
 </div>
+
+<script src="/static/js/products.js"></script>

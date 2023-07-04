@@ -1,6 +1,6 @@
 import Services from "../service/index.js"
 
-const { userService } = Services;
+const { userService, cartService } = Services;
 
 export default class userController {
 
@@ -25,7 +25,7 @@ export default class userController {
         }
     }
 
-    createUsers = async (req, res) => {
+    createUser = async (req, res) => {
         try {
             let user = req.body
 
@@ -33,10 +33,15 @@ export default class userController {
                 return res.status(400).send({ status: 'error', mensaje: 'todos los campos son necesarios' })
             }
 
+            let crearCart = {}
+            //aca creo un carrito y me devuelve su _id mongo
+            const carrito = await cartService.addCart(crearCart);
+
             const newUser = {
                 first_name: user.nombre,
                 last_name: user.apellido,
-                email: user.email
+                email: user.email,
+                cart: carrito
             }
 
             let result = await userService.create(newUser)
@@ -49,7 +54,7 @@ export default class userController {
 
     }
 
-    updateUsers = async (req, res) => {
+    updateUser = async (req, res) => {
         const { uid } = req.params
         const user = req.body
 
@@ -72,7 +77,7 @@ export default class userController {
         })
     }
 
-    deleteUsers = async (req, res) => {
+    deleteUser = async (req, res) => {
         try {
             let { uid } = req.params
             // buscar por pid user

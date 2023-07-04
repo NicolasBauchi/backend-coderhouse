@@ -1,6 +1,6 @@
 import { Router } from "express";
 import userController from "../controllers/users.controller.js";
-const { getUsers, createUsers, updateUsers, deleteUsers } = new userController();
+const { getUsers, createUser, updateUser, deleteUser } = new userController();
 
 //Objeto
 const userRouter = Router();
@@ -8,9 +8,9 @@ const userRouter = Router();
 //Configurar enrutado:
 
 userRouter.get('/', getUsers);
-userRouter.post('/', createUsers)
-userRouter.put('/:uid', updateUsers)
-userRouter.delete('/:uid', deleteUsers)
+userRouter.post('/', createUser)
+userRouter.put('/:uid', updateUser)
+userRouter.delete('/:uid', deleteUser)
 
 
 

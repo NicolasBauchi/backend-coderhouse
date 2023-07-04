@@ -9,7 +9,7 @@ dotenv.config(); //.env
 const LocalStrategy = local.Strategy;
 const adminMail = process.env.ADMIN_EMAIL
 const adminPassword = process.env.ADMIN_PASSWORD
-const { userService } = Services;
+const { userService, cartService } = Services;
 
 export const initPassportLocal = () => {
 
@@ -17,7 +17,7 @@ export const initPassportLocal = () => {
         passReqToCallback: true,
         usernameField: "email"
     }, async (req, emailreg, password, done) => {
-        const { username, first_name, last_name, age, role="User" } = req.body;
+        const { username, first_name, last_name, age, role = "User" } = req.body;
 
         //Chequeo que la contraseña no sea espacios vacíos:
         if (!password || password.trim().length <= 0) {
@@ -27,6 +27,12 @@ export const initPassportLocal = () => {
         try {
             let userBD = await userService.getByEmail(emailreg)
             if (userBD) return done(null, false)
+
+            let crearCart = {}
+            //aca creo un carrito y me devuelve su _id mongo
+            const carrito = await cartService.addCart(crearCart);
+            let auxCarro = String(carrito)
+
             let newUser = {
                 username,
                 first_name,
@@ -35,10 +41,9 @@ export const initPassportLocal = () => {
                 password: createHash(password),
                 role,
                 age,
-                cart: null
+                cart: auxCarro
             }
 
-            //let result = await userModel.create(newUser)
             let result = await userService.create(newUser)
             return done(null, result)
 
@@ -118,6 +123,12 @@ export const initPassportGithub = () => {
 
             //let user = await userModel.findOne({ email: profile._json.email })
             let user = await userService.getByEmail(profile._json.email);
+
+            let crearCart = {}
+            //aca creo un carrito y me devuelve su _id mongo
+            const carrito = await cartService.addCart(crearCart);
+            let auxCarro = String(carrito)
+
             /* Si no existe el usuario en BD se lo crea: */
             if (!user) {
                 let newUser = {
@@ -127,7 +138,9 @@ export const initPassportGithub = () => {
                     email: profile._json.email,
                     password: " ",
                     role: profile._json.type,
-                    age: 617
+                    age: 617,
+                    cart: auxCarro
+
                 }
                 /* !profile._json.email ? "SalioNULL@hotmail.com" : profile._json.email, */
 

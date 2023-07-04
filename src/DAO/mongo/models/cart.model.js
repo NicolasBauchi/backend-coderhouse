@@ -21,11 +21,12 @@ const cartSchema = new mongoose.Schema({
                     ref: "products"
                 },
                 quantity: {
-                    type: Number
+                    type: Number,
+                    default: 1,
                 }
             }
         ],
-        required: true,
+        required: false,
     }
 
 });

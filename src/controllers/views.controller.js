@@ -57,8 +57,9 @@ export default class viewsController {
             res.render("errorPage", info)
         }
         else {
-            let { first_name, last_name, role, username } = req.session.user;
-            userLoged = { first_name, last_name, loged: true, role, username }
+            let { first_name, last_name, role, username, cart } = req.session.user;
+
+            userLoged = { first_name, last_name, loged: true, role, username, cart }
 
             productService.getFiltredPaginate(req.query)
                 .then(losProductos => {
@@ -101,15 +102,20 @@ export default class viewsController {
         }
 
 
-        console.log(userLoged);
-        console.log(req.session.user);
+        console.log("UserLoged", userLoged);
+        console.log("req.ses.user", req.session.user);
 
     }
 
     cartById = async (req, res) => {
-        const cid = req.params.cid
+        let cid = req.params.cid
+
         if (!cid) {
             return "No puede estar vacío ID del carrito. Vuelve a intentar."
+        }
+
+        if (cid == 0) {
+            cid = req.session.user.cart
         }
 
         cartService.getCart(cid).then((carrito) => {

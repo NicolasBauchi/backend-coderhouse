@@ -1,14 +1,18 @@
-
 <div class="listado">
+  <h1>Este es tu carrito</h1>
   <h2>Productos del carrito solicitado:</h2>
   <ul>
     {{#each products}}
-      <li>
+      <li id="{{this.id}}">
         <div><b>Producto: </b>{{this.product.title}}</div>
         <div><b>Descripción: </b>{{this.product.description}}</div>
         <div><b>Quantity: </b>{{this.quantity}}</div>
-
       </li>
     {{/each}}
   </ul>
+
+  <div id="botonera">
+    <button id="finalizarCompra">Finalizar Compra</button>
+    <button id="cancelarCompra">Cancelar Compra</button>
+  </div>
 </div>

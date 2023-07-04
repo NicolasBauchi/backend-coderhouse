@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import UserDTO from "../DTO/user.dto.js";
 dotenv.config(); //.env
 
 export default class sessionController {
@@ -15,9 +16,11 @@ export default class sessionController {
     login = async (req, res) => {
         const adminMail = process.env.ADMIN_EMAIL
         const adminPassword = process.env.ADMIN_PASSWORD
+
+
         const { email, password } = req.body;
         if (!email || !password) return res.status(400).send({ status: "error", error: "Campos incompletos" })
-        console.log("ENTRO A /LOGIN", req.body);
+
         //Permiso especial Coder:
         if (email == adminMail && password == adminPassword) {
 
@@ -41,7 +44,8 @@ export default class sessionController {
                 first_name: req.user.first_name,
                 last_name: req.user.last_name,
                 email: req.user.email,
-                role: req.user.role
+                role: req.user.role,
+                cart: req.user.cart
             }
         }
 
@@ -59,11 +63,8 @@ export default class sessionController {
         if (!user) {
             return res.status(404).send("No hay usuario logueado.")
         } else {
-
-            return res.status(200).send("Tu usuario es: \n" + JSON.stringify(user))
+            return res.send(JSON.stringify(new UserDTO().getUsuarioCurrent(user)))
         }
-
-
     }
 
     counterFunction = (req, res) => {
@@ -91,14 +92,14 @@ export default class sessionController {
     }
 
     failRegister = (req, res) => {
-        
+
         let info = {
             style: "/static/css/errorPage.css",
             errorMsg: "Falló autenticación"
         }
         res.render("errorPage", info)
-       /*  console.log('Falló la estrategia')
-        res.send({ status: 'error', error: 'falló autenticación' }) */
+        /*  console.log('Falló la estrategia')
+         res.send({ status: 'error', error: 'falló autenticación' }) */
     }
 
     githubCallBack = async (req, res) => {

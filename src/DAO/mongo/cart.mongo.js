@@ -1,4 +1,4 @@
-import cartModel from "../models/cart.model.js";
+import cartModel from "./models/cart.model.js";
 
 export default class cartManagerMongo {
 
@@ -13,7 +13,7 @@ export default class cartManagerMongo {
             if (!ultimoIdCart) {
                 valorId = 1;
             } else {
-                valorId += 1;
+                valorId = (ultimoIdCart.id + 1);
             }
         } catch (error) {
             return new Error(error)
@@ -23,16 +23,28 @@ export default class cartManagerMongo {
         //Guardar cart a la BD.
         try {
             cart.id = valorId;
-            return await cartModel.create(cart)
+            await cartModel.create(cart)
+            
+            //Busco el id del carrito nuevo.
+            let cartNuevo = await cartModel.findOne({ id: cart.id })
+            //Devuelvo el _id mongo del carrito nuevo:
+            return cartNuevo._id
         } catch (error) {
             return new Error(error)
         }
     }
 
-
     async getCart(cid) {
         try {
             return await cartModel.findOne({ _id: cid }, { products: 1 }).populate("products.product").lean();
+        } catch (error) {
+            return new Error(error)
+        }
+    }
+
+    async getCartByIdCampo(cid) {
+        try {
+            return await cartModel.findOne({ id: cid }, { products: 1 }).populate("products.product").lean();
         } catch (error) {
             return new Error(error)
         }

@@ -1,8 +1,14 @@
+h1,
+h2 {
+  color: white;
+}
 .listado {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
+  background-color: #015aaa;
+  height: 80vh;
 }
 .listado ul {
   display: flex;
@@ -16,10 +22,47 @@
   padding: 20px;
   border: 2px solid black;
   background-color: darkgray;
-  min-height: 100px;
+  height: 150px;
   min-width: 200px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+/*  butons  */
+#botonera {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 50px;
+  width: 100%;
+  gap: 40px;
+  
+}
+
+/*   ---------- cancelar compra buton  */
+#cancelarCompra {
+  background-color: red;
+  padding: 15px 25px;
+  border: 2px solid white;
+  color: white;
+  font-weight: 600;
+}
+#cancelarCompra:hover {
+  background-color: rgb(91, 4, 4);
+}
+/*   ---------- finalizar compra buton  */
+#finalizarCompra {
+  background-color: green;
+  border: 2px solid white;
+  padding: 15px 25px;
+  color: white;
+  font-weight: 600;
+}
+#finalizarCompra:hover {
+  background-color: rgb(7, 77, 7);
 }
