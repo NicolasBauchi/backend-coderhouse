@@ -38,6 +38,18 @@ export default class ProductManagerMongo {
             return new Error(error)
         }
     }
+    async updateProductByArray(arrayProducts) {
+
+        for (let i = 0; i < arrayProducts.length; i++) {
+            const prod = arrayProducts[i]
+            try {
+                return await productModel.updateOne(prod)
+            } catch (error) {
+                return new Error(error)
+            }
+        }
+
+    }
 
     async deleteProduct(pid) {
         try {

@@ -149,9 +149,11 @@ export default class cartController {
         if (seCompro) {
 
             //Descontar del stock de productos
-            carritoContinuan.forEach(async producto => {
-                await productService.updateProduct(producto.product);
+            let auxProd = []
+            carritoContinuan.forEach(pr => {
+                auxProd.push(pr.product)
             });
+            await productService.updateProductByArray(auxProd)
 
             //Quitar del carrito
 
@@ -160,8 +162,9 @@ export default class cartController {
             let result = losProductos.filter(el => !carritoContinuan.includes(el))
 
             if (!result) {
+                console.log("result carts.controler  line 163->", result);
                 //Si todos los productos del carrito fueron comprados entonces vacio el carro.
-                await cartService.deleteAllProductsCart(cid)
+                await cartService.deleteAllProductsCart(data)
             } else {
                 //Sino voy quitando los que si fueron comprados 
                 let products = []
