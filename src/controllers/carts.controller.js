@@ -1,6 +1,6 @@
 import Services from "../service/index.js";
 
-const { cartService } = Services;
+const { cartService, productService, ticketService } = Services;
 
 export default class cartController {
 
@@ -103,18 +103,124 @@ export default class cartController {
     }
 
     purchase = async (req, res) => {
+        const carritoQuedan = [];
+        const carritoContinuan = [];
+        let ticketGenerado;
+        let montoTotal = 0;
+        let seCompro = false;
 
         //1_Tengo que tener el carrito del usuario
+        let data = req.params.cid;
+
+        const carritoUsuario = await cartService.getCart(data);
+        let losProductos = carritoUsuario.products;
 
 
         //2_corroborar el stock de los productos
+        //recorro producto por producto del carrito para ver disponibilidad:
+        losProductos.forEach(item => {
 
-        // a_ si ha stock del producto proceder con la compra
-        //b_ con los productos que no haya en stock no se puede agregar al proceso de compra
+
+            //let productoDB = await productService.getProductById(item.product._id);
+
+
+            let calculoStock = (item.product.stock - item.quantity)
+            // a_ si hay stock del producto proceder con la compra y hacer resta en BD.
+            if (calculoStock >= 0) {
+                item.product.stock = calculoStock;
+
+                //Agrego los productos que continuan con la compra y los descuento despues.
+                carritoContinuan.push(item)
+                //-------------
+                montoTotal += (item.quantity * item.product.price)
+                seCompro = true;
+                //carritoContinuan.push(item)
+            } else {
+                //b_ con los productos que no haya en stock no se puede agregar al proceso de compra
+                carritoQuedan.push(item)
+            }
+
+        })
+
+
 
         //3_ luego del chequeo usar el tickets service para generar un ticket con los datos de la compra
-        // si se cancela la compra se devuelve el arreglo con los IDs de los productos que no se procesaron
+
+        if (seCompro) {
+
+            //Descontar del stock de productos
+            carritoContinuan.forEach(async producto => {
+                await productService.updateProduct(producto.product);
+            });
+
+            //Quitar del carrito
+
+            //preparo la info
+
+            let result = losProductos.filter(el => !carritoContinuan.includes(el))
+
+            if (!result) {
+                //Si todos los productos del carrito fueron comprados entonces vacio el carro.
+                await cartService.deleteAllProductsCart(cid)
+            } else {
+                //Sino voy quitando los que si fueron comprados 
+                let products = []
+                result.forEach(el => {
+                    let item =
+                    {
+                        product: el.product._id,
+                        quantity: el.quantity
+                    }
+                    products.push(item)
+                });
+
+                let carrito = {
+                    cid: data,
+                    data: products
+                }
+                await cartService.updateCart(carrito)
+            }
+
+
+            //Generar Ticket
+            let compra = {};
+
+            let usuarioComprador = req.session.user.email;
+            let fecha = new Date().toLocaleString();
+            compra.usuarioComprador = usuarioComprador;
+            compra.fecha = String(fecha);
+            compra.montoTotal = montoTotal;
+
+            ticketGenerado = await ticketService.generateTicket(compra)
+        }
+
+
+        //4_ CONDICIONAL se devuelve el arreglo con los IDs de los productos que no se procesaron
+        /*  if (carritoQuedan.length > 0) {
+ 
+             //Dejar en carrito
+             //preparo la info
+             let products = []
+             carritoQuedan.forEach(el => {
+                 let item =
+                 {
+                     product: el.product._id,
+                     quantity: el.quantity
+                 }
+                 products.push(item)
+             });
+ 
+             let carrito = {
+                 cid: data,
+                 data: products
+             }
+             await cartService.updateCart(carrito)
+         } */
+        let mensajeTicket = "La compra se realizó con éxito, tu ticket: -> " + JSON.stringify(ticketGenerado)
+        res.status(200).send(mensajeTicket)
 
     }
+
+
 
 }

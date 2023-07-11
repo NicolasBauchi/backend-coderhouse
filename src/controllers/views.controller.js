@@ -58,8 +58,8 @@ export default class viewsController {
         }
         else {
             let { first_name, last_name, role, username, cart } = req.session.user;
-
-            userLoged = { first_name, last_name, loged: true, role, username, cart }
+           
+            userLoged = { first_name, last_name, loged: true, role, username }
 
             productService.getFiltredPaginate(req.query)
                 .then(losProductos => {
@@ -100,10 +100,6 @@ export default class viewsController {
                 });
 
         }
-
-
-        console.log("UserLoged", userLoged);
-        console.log("req.ses.user", req.session.user);
 
     }
 

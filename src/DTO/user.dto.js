@@ -16,7 +16,7 @@ export default class UserDTO {
             first_name: user.first_name,
             last_name: user.last_name,
             role: user.role,
-            cart: user.cartId ? user.cartId : 0
+            cart: user.cart ? user.cart : 0
         }
         return userCurrent
     }

@@ -45,24 +45,24 @@ h2 {
 }
 
 /*   ---------- cancelar compra buton  */
-#cancelarCompra {
+#atras {
   background-color: red;
   padding: 15px 25px;
   border: 2px solid white;
   color: white;
   font-weight: 600;
 }
-#cancelarCompra:hover {
+#atras:hover {
   background-color: rgb(91, 4, 4);
 }
 /*   ---------- finalizar compra buton  */
-#finalizarCompra {
+#finalizarCompraBtn {
   background-color: green;
   border: 2px solid white;
   padding: 15px 25px;
   color: white;
   font-weight: 600;
 }
-#finalizarCompra:hover {
+#finalizarCompraBtn:hover {
   background-color: rgb(7, 77, 7);
 }

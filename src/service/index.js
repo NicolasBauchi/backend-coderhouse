@@ -12,19 +12,21 @@ const cartService = new cartManagerMongo();
 const messageService = new messagesManagerMongo();
 const productService = new ProductManagerMongo(); */
 
-let { userDao, productDao, CartDao, messagesDao } = factory
+let { userDao, productDao, CartDao, messagesDao, ticketsDao } = factory
 
 const userService = userDao;
 const cartService = CartDao;
 const messageService = messagesDao;
 const productService = productDao;
+const ticketService = ticketsDao;
 
 
 const Services = {
     userService,
     cartService,
     messageService,
-    productService
+    productService,
+    ticketService
 }
 
 export default Services;

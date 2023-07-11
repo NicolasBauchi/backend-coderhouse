@@ -69,10 +69,9 @@ export const initPassportLocal = () => {
             return done(null, usuarioAdmin)
 
         } else {
-            //Si no es usuario CODER entonces continuar chequeo LOGIN:
+            //Si no es usuario admin CODER entonces continuar chequeo LOGIN:
             const userDB = await userService.getByEmail(username);
-            //const userDB = await userModel.findOne({ email: username })
-
+            
             try {
                 if (!userDB) return done(null, false)
 

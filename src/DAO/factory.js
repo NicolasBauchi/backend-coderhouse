@@ -5,13 +5,14 @@ import messagesManagerMongo from "./mongo/messages.mongo.js";
 import objectConfig from "../config/objectConfig.js";
 import CartManager from "./fileSystem/CartManager.js";
 import ProductManager from "./fileSystem/ProductManager.js";
+import ticketManagerMongo from "./mongo/ticket.mongo.js";
 
 let productDao;
 let CartDao;
 let userDao;
 let messagesDao;
+let ticketsDao;
 
-console.log(objectConfig.persistence);
 switch (objectConfig.persistence) {
 
     case "mongo":
@@ -21,7 +22,7 @@ switch (objectConfig.persistence) {
         CartDao = new cartManagerMongo();
         userDao = new UserDaoMongo();
         messagesDao = new messagesManagerMongo();
-
+        ticketsDao = new ticketManagerMongo()
         break;
 
     case "fs":
@@ -38,14 +39,8 @@ const factory = {
     userDao,
     productDao,
     CartDao,
-    messagesDao
+    messagesDao,
+    ticketsDao
 }
 
 export default factory;
-
-/* module.exports = {
-    userDao,
-    productDao,
-    CartDao,
-    messagesDao
-} */

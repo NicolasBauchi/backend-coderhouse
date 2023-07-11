@@ -1,5 +1,19 @@
 
 eventoFormulario()
+//cargarCarrito()
+
+addEventListener("DOMContentLoaded", async () => {
+    let url = "/api/session/current"
+
+
+    const response = await fetch(url)
+    const data = await response.json();
+    console.log("data que recibo de fetch", data);
+    let carro = document.getElementById("anchorCarrito")
+    let urlCompleta = "/carts/" + data.cart
+    carro.href = urlCompleta
+})
+
 
 
 function eventoFormulario() {
