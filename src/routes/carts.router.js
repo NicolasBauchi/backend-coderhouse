@@ -1,15 +1,18 @@
 import { Router } from 'express';
 import cartController from '../controllers/carts.controller.js';
-import { authUser } from '../middlewares/authUser.middleware.js';
+//import { authUser } from '../middlewares/authUser.middleware.js';
+import handlePolicies from '../middlewares/authentication.middleware.js';
 
 const cartsRouter = Router();
 const { createCart, addProduct, removeProduct,
     updateProduct, index, getCartByID,
     updateCart, removeProductsInCart, purchase } = new cartController();
 
-cartsRouter.post("/", authUser, createCart)
+//cartsRouter.post("/", authUser, createCart)
+cartsRouter.post("/", handlePolicies("USER"), createCart)
 
-cartsRouter.post("/:cid/product/:pid", authUser, addProduct)
+//cartsRouter.post("/:cid/product/:pid", authUser, addProduct)
+cartsRouter.post("/:cid/product/:pid", handlePolicies("user"), addProduct)
 
 cartsRouter.delete("/:cid/product/:pid", removeProduct)
 

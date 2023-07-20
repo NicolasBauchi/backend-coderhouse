@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
 import UserDTO from "../DTO/user.dto.js";
+//import jWebToken from "../config/jWebToken.js"
 dotenv.config(); //.env
-
+//const jwtFunc = new jWebToken();
 export default class sessionController {
 
     logout = async (req, res) => {
@@ -23,14 +24,13 @@ export default class sessionController {
 
         //Permiso especial Coder:
         if (email == adminMail && password == adminPassword) {
-
             req.session.user = {
                 username: "CoderHouse",
                 first_name: "Coder",
                 last_name: "House",
                 email: "adminCoder@coder.com",
-                role: "admin",
-                age: 18
+                role: "Admin",
+                cart: 0
             }
 
         } else {
@@ -47,13 +47,38 @@ export default class sessionController {
                 role: req.user.role,
                 cart: req.user.cart
             }
+
+            /*  const access_token = jwtFunc.generateToken(req.session.user)
+ 
+             res.send({
+                 status: "success",
+                 message: "Login success",
+                 access_token
+             }) */
+
         }
 
         //Redirigir a productos:
         res.redirect("/products")
+
     }
 
     register = async (req, res) => {
+
+        /*  let token = generateToken({
+             first_name: 'fede',
+             last_name: 'Osandon',
+             email: 'f@gmail.com'
+         })
+     
+     
+         res.status(200).send({
+             status: 'success',
+             message: 'Usuario creado correctamente',
+             token
+         }) */
+
+
         res.send({ status: 'success', message: 'User registered' })
     }
 

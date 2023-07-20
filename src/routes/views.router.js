@@ -1,6 +1,7 @@
 import { Router } from "express";
 import viewsController from "../controllers/views.controller.js";
-import { authUser } from "../middlewares/authUser.middleware.js";
+//import { authUser } from "../middlewares/authUser.middleware.js";
+import handlePolicies from '../middlewares/authentication.middleware.js';
 
 const { index, home, realTimeProducts,
     chat, products, cartById, loginView, registerView
@@ -16,7 +17,8 @@ viewsRouter.get("/home", home)
 viewsRouter.get("/realtimeproducts", realTimeProducts)
 
 //Vista Chat websocket real time
-viewsRouter.get("/chat", authUser, chat)
+//viewsRouter.get("/chat", authUser, chat)
+viewsRouter.get("/chat", handlePolicies("USER"), chat)
 
 viewsRouter.get("/products", products)
 

@@ -3,7 +3,8 @@ export default class ProductManager {
     constructor(product) {
         this.product = product;
         this.id_prod = 0;
-        this.path = "../path/productos.json";
+        //this.path = "../path/productos.json";
+        this.path = "../../../path/productos.json";
     }
 
     addProduct(prod) {

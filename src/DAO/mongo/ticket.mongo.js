@@ -13,7 +13,7 @@ export default class ticketManagerMongo {
         ticket.purchase_datetime = compra.fecha;
         ticket.amount = compra.montoTotal;
         ticket.purchaser = compra.usuarioComprador;
-        console.log("entro a generarTicket, muestro ticket ->", ticket);
+        console.log("entro a generarTicket ticket.mongo, muestro ticket ->", ticket);
         //Guardo el ticket:
         try {
             return await ticketModel.create(ticket)

@@ -39,15 +39,27 @@ export default class ProductManagerMongo {
         }
     }
     async updateProductByArray(arrayProducts) {
+        console.log("ENTRO A UPDATEPRODUCTARRAY 42");
+        console.log("arrayproducts", arrayProducts);
 
-        for (let i = 0; i < arrayProducts.length; i++) {
-            const prod = arrayProducts[i]
+        await arrayProducts.forEach(element => {
+            console.log("PROD ->", element);
             try {
-                return await productModel.updateOne(prod)
+                productModel.updateOne(element)
             } catch (error) {
                 return new Error(error)
             }
-        }
+        });
+
+        /* for (let i = 0; i < arrayProducts.length; i++) {
+            const prod = arrayProducts[i]
+            console.log("PROD ->", prod);
+            try {
+                await productModel.updateOne(prod)
+            } catch (error) {
+                return new Error(error)
+            }
+        } */
 
     }
 

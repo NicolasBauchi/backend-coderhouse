@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { auth } from "../middlewares/authentication.middleware.js";
+//import { auth } from "../middlewares/authentication.middleware.js";
 import passport from "passport";
 import sessionController from "../controllers/session.controller.js"
+import handlePolicies from "../middlewares/authentication.middleware.js";
 
 const { login, register, logout,
     currentUser, counterFunction, privateURL,
@@ -33,8 +34,8 @@ sessionRouter.get('/failregister', failRegister)
 //Desloguearse
 sessionRouter.get("/logout", logout);
 
-//Ruta privada cceso admin
-sessionRouter.get("/privado", auth, privateURL);
+//Ruta privada acceso admin
+sessionRouter.get("/privado", handlePolicies("ADMIN"), privateURL);
 
 //Función con session
 sessionRouter.get('/counter', counterFunction)

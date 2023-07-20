@@ -110,9 +110,9 @@ export default class cartController {
         let seCompro = false;
 
         //1_Tengo que tener el carrito del usuario
-        let data = req.params.cid;
+        let idCarro = req.params.cid;
 
-        const carritoUsuario = await cartService.getCart(data);
+        const carritoUsuario = await cartService.getCart(idCarro);
         let losProductos = carritoUsuario.products;
 
 
@@ -134,7 +134,6 @@ export default class cartController {
                 //-------------
                 montoTotal += (item.quantity * item.product.price)
                 seCompro = true;
-                //carritoContinuan.push(item)
             } else {
                 //b_ con los productos que no haya en stock no se puede agregar al proceso de compra
                 carritoQuedan.push(item)
@@ -160,11 +159,15 @@ export default class cartController {
             //preparo la info
 
             let result = losProductos.filter(el => !carritoContinuan.includes(el))
+            console.log("carritoContinuan -> 163", carritoContinuan);
+            console.log("result -> 164", result);
 
-            if (!result) {
+            if (result.length == 0) {
                 console.log("result carts.controler  line 163->", result);
                 //Si todos los productos del carrito fueron comprados entonces vacio el carro.
-                await cartService.deleteAllProductsCart(data)
+                console.log("idcarro 168", idCarro);
+                const vaciadoCarrito = await cartService.deleteAllProductsCart(idCarro)
+                console.log("se vacio carrito? -> 170", vaciadoCarrito);
             } else {
                 //Sino voy quitando los que si fueron comprados 
                 let products = []
@@ -178,7 +181,7 @@ export default class cartController {
                 });
 
                 let carrito = {
-                    cid: data,
+                    cid: idCarro,
                     data: products
                 }
                 await cartService.updateCart(carrito)

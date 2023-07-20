@@ -16,12 +16,17 @@ import { initPassportGithub } from "./config/passport.config.js";
 import { initPassportLocal } from "./config/passport.config.js";
 import cors from "cors";
 import pruebasRuta from "./routes/pruebas.router.js";
-/* import __dirname from "./config/dirName.js"; */
+//import __dirname from "./config/dirName.js";
+import path from "path"
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename)
 
 dotenv.config(); //.env
 //ejemplo => let url = process.env.MONGO_URL
-
-const __dirname = "C:\\Users\\Nico\\Documents\\CURSOS\\Programacion backend\\src";
 
 const app = express();
 app.use(express.json())
@@ -34,7 +39,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL,
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 30,
+        ttl: 60*60,
     }),
     secret: "qweqweqwe",
     resave: false,
@@ -61,7 +66,7 @@ app.use("/static", express.static(__dirname + '/public'))
 //Si se usa import (o sea modules) hay que hacer una configuracion antes.
 
 app.engine('handlebars', handlebars.engine())
-app.set('views', __dirname + '/views')
+app.set('views', path.join(__dirname + '\\views'))
 /* app.set('views',  'C:\\Users\\Nico\\Documents\\CURSOS\\Programacion backend\\src\\views') */
 app.set('view engine', 'handlebars')
 
@@ -127,8 +132,8 @@ io.on('connection', socket => {
         io.emit("formProd", productos);
     })
 
-    let productos = manager.getProducts();
-    io.emit("formProd", productos);
+    //let productos = manager.getProducts();
+    //io.emit("formProd", productos);
 
 
 
