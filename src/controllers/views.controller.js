@@ -57,7 +57,7 @@ export default class viewsController {
             res.render("errorPage", info)
         }
         else {
-            let { first_name, last_name, role, username, cart } = req.session.user;
+            let { first_name, last_name, role, username } = req.session.user;
            
             userLoged = { first_name, last_name, loged: true, role, username }
 

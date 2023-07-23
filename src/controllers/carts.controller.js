@@ -54,7 +54,9 @@ export default class cartController {
     }
 
     addProduct = (req, res) => {
-        let cartId = req.session.user.cart;
+        //let cartId = req.session.user.cart;
+
+        let cartId = req.params.cid;
         let prodId = req.params.pid;
 
         res.send(cartService.addProdToCart(cartId, prodId));

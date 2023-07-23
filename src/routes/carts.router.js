@@ -12,7 +12,7 @@ const { createCart, addProduct, removeProduct,
 cartsRouter.post("/", handlePolicies("USER"), createCart)
 
 //cartsRouter.post("/:cid/product/:pid", authUser, addProduct)
-cartsRouter.post("/:cid/product/:pid", handlePolicies("user"), addProduct)
+cartsRouter.post("/:cid/product/:pid", handlePolicies("USER"), addProduct)
 
 cartsRouter.delete("/:cid/product/:pid", removeProduct)
 

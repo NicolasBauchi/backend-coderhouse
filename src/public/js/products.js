@@ -1,6 +1,6 @@
 
 eventoFormulario()
-//cargarCarrito()
+var idCartCliente = "";
 
 addEventListener("DOMContentLoaded", async () => {
     let url = "/api/session/current"
@@ -8,8 +8,9 @@ addEventListener("DOMContentLoaded", async () => {
 
     const response = await fetch(url)
     const data = await response.json();
-    console.log("data que recibo de fetch", data);
+    //console.log("data que recibo de fetch", data);
     let carro = document.getElementById("anchorCarrito")
+    idCartCliente = data.cart;
     let urlCompleta = "/carts/" + data.cart
     carro.href = urlCompleta
 })
@@ -39,8 +40,9 @@ async function productForm(evt) {
 
 
     //Envio de info - agregar prod al carrito
-    let URL = "/api/carts/0/product/" + datos.id;
-    console.log("url ", URL);
+    let urlBase = "/api/carts/";
+
+    let URL = urlBase + idCartCliente + "/product/" + datos.id;
 
     const envio = fetch(URL, {
         method: 'POST',
