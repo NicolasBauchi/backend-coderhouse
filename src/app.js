@@ -4,7 +4,6 @@ import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
 import ProductManager from "./DAO/fileSystem/ProductManager.js";
-import objectConfig from "./config/objectConfig.js";
 import userRouter from "./routes/users.router.js";
 import messagesManagerMongo from "./DAO/mongo/messages.mongo.js";
 import session from "express-session";
@@ -16,10 +15,10 @@ import { initPassportGithub } from "./config/passport.config.js";
 import { initPassportLocal } from "./config/passport.config.js";
 import cors from "cors";
 import pruebasRuta from "./routes/pruebas.router.js";
-//import __dirname from "./config/dirName.js";
 import path from "path"
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import errorHandler from "./middlewares/errors/index.js"
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -47,13 +46,13 @@ app.use(session({
 }))
 
 
-
-let PORT = 8080;
+let PORT = process.env.PORT;
 const httpServer = app.listen(PORT, () => {
     console.log(`servidor arriba en el puerto ${PORT}!`);
 })
-//Conexión a una BD con mongoose:
-/* objectConfig.connectDB(); */
+
+//USO ERROR HANDLER
+app.use(errorHandler)
 
 //Utilización de CORS
 app.use(cors())
@@ -67,12 +66,10 @@ app.use("/static", express.static(__dirname + '/public'))
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', path.join(__dirname + '\\views'))
-/* app.set('views',  'C:\\Users\\Nico\\Documents\\CURSOS\\Programacion backend\\src\\views') */
 app.set('view engine', 'handlebars')
 
 //RUTA DE VISTAS
 app.use("/", viewsRouter);
-
 // hbs ______________________________
 
 //Rutas API LOGICAS----

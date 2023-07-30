@@ -1,4 +1,8 @@
 import Services from "../service/index.js"
+import CustomError from "../service/errors/CustomError.js";
+import EErrors from "../service/errors/enums.js";
+import { generateUserErrorInfo } from "../service/errors/info.js";
+
 
 const { userService, cartService } = Services;
 
@@ -27,10 +31,24 @@ export default class userController {
 
     createUser = async (req, res) => {
         try {
-            let user = req.body
+            //let user = req.body
+            const { first_name, last_name, email } = req.body
 
-            if (!user.nombre || !user.apellido) {
-                return res.status(400).send({ status: 'error', mensaje: 'todos los campos son necesarios' })
+            if (!first_name || !last_name || !email) {
+                CustomError.createError({
+                    name: "User creation error",
+                    cause: generateUserErrorInfo({
+                        first_name,
+                        last_name,
+                        email
+                    }),
+                    message: "Error trying to create user",
+                    code: EErrors.MISSING_DATA
+
+                })
+
+
+                //return res.status(400).send({ status: 'error', mensaje: 'todos los campos son necesarios' })
             }
 
             let crearCart = {}
@@ -38,9 +56,9 @@ export default class userController {
             const carrito = await cartService.addCart(crearCart);
 
             const newUser = {
-                first_name: user.nombre,
-                last_name: user.apellido,
-                email: user.email,
+                first_name: first_name,
+                last_name: last_name,
+                email: email,
                 cart: carrito
             }
 

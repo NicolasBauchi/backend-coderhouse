@@ -71,9 +71,10 @@ export default class ProductManagerMongo {
         }
     }
 
-    async getFiltredPaginate(busqueda) {
+    async getFiltredPaginate(busqueda, limite = 1) {
         //obteniendo parametros de la peticion:
-        const { limit = 1, page, sort = 1, query } = busqueda;
+        const { page, sort = 1, query } = busqueda;
+        const limit = limite;
         let filtros = {}
 
         /* Como forma de protección a los valores ingresados se agrega

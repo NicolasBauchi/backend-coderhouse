@@ -1,10 +1,16 @@
 import Services from "../service/index.js";
+import generateProduct from "../config/fakerUtil.js";
+import CustomError from "../service/errors/CustomError.js";
+import EErrors from "../service/errors/enums.js";
+import { generatePoductErrorInfo } from "../service/errors/info.js";
+
 const { productService } = Services;
 
 export default class productsController {
 
     getProducts = async (req, res) => {
-        let resultado = productService.getFiltredPaginate(req.query)
+        let resultado = await productService.getFiltredPaginate(req.query, 10)
+
 
         const { docs, hasPrevPage, hasNextPage, prevPage,
             nextPage, totalPages, page, prevLink, nextLink } = resultado
@@ -30,15 +36,30 @@ export default class productsController {
             res.send("Campo vacío.");
         } else {
             const encontrado = await productService.getProductById(idProduct)
-            res.send(encontrado);
+            if (encontrado) {
+                res.send(encontrado);
+            } else {
+                res.send("NO SE ENCONTRÓ EL PRODUCTO EN LA BD");
+            }
+
         }
     }
 
     createProduct = (req, res) => {
         let prod = req.body;
+        let { title, category, price } = req.body;
 
-        if (!prod) {
-            res.send("No hay producto que ingresar.")
+
+        if (!title || !category || !price || !prod) {
+            CustomError.createError({
+                name: "Product Creation error",
+                cause: generatePoductErrorInfo(prod),
+                message: "Error trying to create Product",
+                code: EErrors.MISSING_DATA
+            })
+
+
+            //res.send("No hay producto que ingresar.")
         } else {
             res.send(productService.addProduct(prod))
         }
@@ -66,6 +87,18 @@ export default class productsController {
             productService.deleteProduct(prodId);
             res.send("Eliminado con éxito.");
         }
+    }
+
+    mockingproducts = (req, res) => {
+        const losProductos = []
+
+        for (let i = 0; i < 100; i++) {
+            const prod = generateProduct();
+
+            losProductos.push(prod)
+        }
+
+        res.status(200).send(losProductos)
     }
 }
 

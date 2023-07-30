@@ -1,24 +1,28 @@
 import { Router } from 'express';
 import productsController from '../controllers/products.controller.js';
-//import { authAdmin } from "../middlewares/authAdmin.middleware.js";
 import handlePolicies from '../middlewares/authentication.middleware.js';
 
-const { getProducts, getProductById, createProduct,
+const { mockingproducts, getProducts, getProductById, createProduct,
     updateProduct, deleteProduct } = new productsController();
 const productsRouter = Router();
+
+productsRouter.get("/mockingproducts", mockingproducts)
 
 //Devolver productos:
 productsRouter.get("/", getProducts)
 
+//Devolver producto según ID:
 productsRouter.get(`/:pid`, getProductById)
 
-//productsRouter.post("/", authAdmin, createProduct)
+//Crear producto
 productsRouter.post("/", handlePolicies("ADMIN"), createProduct)
 
-//productsRouter.put("/:pid", authAdmin, updateProduct)
+//Modificar producto
 productsRouter.put("/:pid", handlePolicies("ADMIN"), updateProduct)
 
-//productsRouter.delete("/:pid", authAdmin, deleteProduct)
+//Eliminar producto
 productsRouter.delete("/:pid", handlePolicies("ADMIN"), deleteProduct)
+
+
 
 export default productsRouter;
