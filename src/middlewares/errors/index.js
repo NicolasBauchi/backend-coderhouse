@@ -4,11 +4,6 @@ export default (error, req, res, next) => {
     //Muestro en consola el error:
     console.log(error.cause);
 
-    /*  ROUTING_ERROR: 1,
-    INVALID_TYPES_ERROR: 2,
-    DATABASE_ERROR: 3,
-    MISSING_DATA: */
-
     switch (error.code) {
 
         case EErrors.ROUTING_ERROR:

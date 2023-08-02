@@ -28,8 +28,36 @@ pruebasRuta.get("/mail", async (req, res) => {
     res.send("Correo enviado con éxito.")
 })
 
-pruebasRuta.get("/mocks", (req, res) => {
+//logger
+pruebasRuta.get("/testLogger", (req, res) => {
+    req.logger.error('alerta')
+    req.logger.info('info')
+    req.logger.warning('warning')
+    req.logger.warning('warning')
+    req.logger.error('error')
+    req.logger.fatal('fatal error')
 
+    res.send({ message: "PRUEBA DEL LOGGER !!!" })
 })
+
+pruebasRuta.get('/simple', (req, res) => {
+    let suma = 0
+    for (let i = 0; i < 1000000; i++) {
+        suma += i
+    }
+    res.send({ suma })
+})
+
+pruebasRuta.get('/compleja', (req, res) => {
+    let suma = 0
+    for (let i = 0; i < 5e8; i++) {
+        suma += i
+    }
+    res.send({ suma })
+})
+
+
+
+
 
 export default pruebasRuta;

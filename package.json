@@ -21,6 +21,7 @@
   "homepage": "https://github.com/NicolasBauchi/backend-coderhouse#readme",
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
+    "artillery-plugin-metrics-by-endpoint": "^1.2.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "commander": "^10.0.1",
@@ -44,6 +45,7 @@
     "socket.io": "^4.6.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "winston": "^3.10.0"
   }
 }

@@ -19,6 +19,7 @@ import path from "path"
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import errorHandler from "./middlewares/errors/index.js"
+import { addLogger } from "./config/logger.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,6 +31,10 @@ dotenv.config(); //.env
 const app = express();
 app.use(express.json())
 
+//Agrego logger a la aplicacion:
+app.use(addLogger)
+
+
 //Linea para que el servidor pueda interpretar mejor los datos complejos
 //Que viajen desde la URL y mapearlos correctamente en el req.query.
 app.use(express.urlencoded({ extended: true }))
@@ -38,7 +43,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL,
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 60*60,
+        ttl: 60 * 60,
     }),
     secret: "qweqweqwe",
     resave: false,
