@@ -58,7 +58,7 @@ export default class viewsController {
         }
         else {
             let { first_name, last_name, role, username } = req.session.user;
-           
+
             userLoged = { first_name, last_name, loged: true, role, username }
 
             productService.getFiltredPaginate(req.query)
@@ -117,7 +117,8 @@ export default class viewsController {
         cartService.getCart(cid).then((carrito) => {
 
             let { products } = carrito;
-            console.log("muestro products:", products);
+            //  console.log("muestro products:", products);
+            req.logger.info(`Productos del carrito: ${products}`)
             let info = {
                 style: "/static/css/cart.css",
                 products

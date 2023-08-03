@@ -19,7 +19,7 @@ import path from "path"
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import errorHandler from "./middlewares/errors/index.js"
-import { addLogger } from "./config/logger.js";
+import { addLogger, logger } from "./config/logger.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -60,7 +60,8 @@ if (entorno === "development") {
 //let PORT = process.env.PORT;
 
 const httpServer = app.listen(PORT, () => {
-    console.log(`MODO ${entorno} -- servidor arriba en el puerto ${PORT}!`);
+    //console.log(`MODO ${entorno} -- servidor arriba en el puerto ${PORT}!`);
+    logger.info(`MODO ${entorno} -- servidor arriba en el puerto ${PORT}!`)
 })
 
 //USO ERROR HANDLER
@@ -164,7 +165,7 @@ io.on('connection', socket => {
 })
 
 app.use((err, req, res, next) => {
-    console.log(err)
+    req.logger.error(err)
     res.status(500).send(' ¡ Todo mal ! - Descripción: -> ' + err)
 })
 
