@@ -50,10 +50,17 @@ app.use(session({
     saveUninitialized: false
 }))
 
+const entorno = process.env.NODE_ENV;
+let PORT = ""
+if (entorno === "development") {
+    PORT = 8081
+} else {
+    PORT = 8080
+}
+//let PORT = process.env.PORT;
 
-let PORT = process.env.PORT;
 const httpServer = app.listen(PORT, () => {
-    console.log(`servidor arriba en el puerto ${PORT}!`);
+    console.log(`MODO ${entorno} -- servidor arriba en el puerto ${PORT}!`);
 })
 
 //USO ERROR HANDLER

@@ -1,4 +1,15 @@
 import winston from "winston";
+import dotenv from "dotenv";
+dotenv.config();
+const entorno = process.env.NODE_ENV;
+
+let levelSelected = "info"
+
+if (entorno === "development") {
+    levelSelected = "debug"
+} else {
+    levelSelected = "info"
+}
 
 const customLevelOptions = {
     levels: {
@@ -23,7 +34,7 @@ const logger = winston.createLogger({
     levels: customLevelOptions.levels,
     transports: [
         new winston.transports.Console({
-            level: 'info',
+            level: levelSelected,
             format: winston.format.combine(
                 winston.format.colorize({ colors: customLevelOptions.colors }),
                 winston.format.simple()
@@ -31,7 +42,7 @@ const logger = winston.createLogger({
         }),
         new winston.transports.File({
             filename: './errors.log',
-            level: 'warning',
+            level: 'error',
             format: winston.format.simple()
         })
     ]
@@ -40,6 +51,6 @@ const logger = winston.createLogger({
 
 export function addLogger(req, res, next) {
     req.logger = logger;
-    req.logger.info(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()}`)
+    req.logger.info(`${req.method} en ${req.url} --- ${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}`)
     next()
 }

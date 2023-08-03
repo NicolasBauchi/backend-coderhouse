@@ -34,12 +34,16 @@ export default class productsController {
         let idProduct = req.params.pid;
         if (!idProduct) { //si esta vacio
             res.send("Campo vacío.");
+            req.logger.info("Campo vacío.")
+
         } else {
             const encontrado = await productService.getProductById(idProduct)
             if (encontrado) {
                 res.send(encontrado);
             } else {
-                res.send("NO SE ENCONTRÓ EL PRODUCTO EN LA BD");
+                let msg = "NO SE ENCONTRÓ EL PRODUCTO EN LA BD"
+                res.send(msg);
+                req.logger.warning(msg)
             }
 
         }
@@ -57,9 +61,8 @@ export default class productsController {
                 message: "Error trying to create Product",
                 code: EErrors.MISSING_DATA
             })
+            req.logger.error("Error trying to create Product")
 
-
-            //res.send("No hay producto que ingresar.")
         } else {
             res.send(productService.addProduct(prod))
         }
@@ -73,8 +76,10 @@ export default class productsController {
         if (!prod) {
             res.send(`No hay producto que modificar. ${idProd ? " " : 'Verifica id.'}  ${prod ? null : 'Verifica campos producto.'}`);
         } else {
+            let msg = `Producto: ${prod.title} modificado correctamente.`
             productService.updateProduct(prod);
-            res.send(`Producto: ${prod.title} modificado correctamente.`);
+            req.logger.info(msg)
+            res.send(msg);
         }
     }
 

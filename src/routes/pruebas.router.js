@@ -30,14 +30,15 @@ pruebasRuta.get("/mail", async (req, res) => {
 
 //logger
 pruebasRuta.get("/testLogger", (req, res) => {
-    req.logger.error('alerta')
-    req.logger.info('info')
-    req.logger.warning('warning')
-    req.logger.warning('warning')
-    req.logger.error('error')
-    req.logger.fatal('fatal error')
 
-    res.send({ message: "PRUEBA DEL LOGGER !!!" })
+    req.logger.fatal('fatal error - ' + new Date().toLocaleTimeString() + ' - ' + new Date().toLocaleDateString())
+    req.logger.error('error - ' + new Date().toLocaleTimeString() + ' - ' + new Date().toLocaleDateString())
+    req.logger.warning('warning - ' + new Date().toLocaleTimeString() + '-' + new Date().toLocaleDateString())
+    req.logger.info('info - ' + new Date().toLocaleTimeString() + ' - ' + new Date().toLocaleDateString())
+    req.logger.http('http - ' + new Date().toLocaleTimeString() + ' - ' + new Date().toLocaleDateString())
+    req.logger.debug('debug - ' + new Date().toLocaleTimeString() + ' - ' + new Date().toLocaleDateString())
+
+    res.send({ message: "PROBANDO TODOS LOS NIVELES DEL LOGGER !!!" })
 })
 
 pruebasRuta.get('/simple', (req, res) => {
